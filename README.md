@@ -1,5 +1,5 @@
 # climate-change-visualization
-- Climate Change Visulaization WEB Application
+Climate Change Visulaization WEB Application
 - Aino Sorsa: ainosorsa
 - Fadi Helal: SAIPRONE
 - Ilya Apasov: Apasov49
