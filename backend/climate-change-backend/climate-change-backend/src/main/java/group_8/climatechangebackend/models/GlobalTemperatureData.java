@@ -3,14 +3,17 @@ package group_8.climatechangebackend.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "hadcrut_global_annual")
-public class GlobalAnnual {
+@Table(name = "global_temperature_data")
+public class GlobalTemperatureData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "record_type")
+    private String recordType;
+
     @Column(name = "time")
-    private int year;
+    private String time;
 
     @Column(name = "anomaly")
     private double anomaly;
@@ -31,12 +34,20 @@ public class GlobalAnnual {
         this.id = id;
     }
 
-    public int getYear() {
-        return this.year;
+    public String getRecordType() {
+        return this.recordType;
     }
 
-    public void setYear(int year) {
-        this.year = year;
+    public void setRecordType(String recordType) {
+        this.recordType = recordType;
+    }
+
+    public String getTime() {
+        return this.time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public double getAnomaly() {
