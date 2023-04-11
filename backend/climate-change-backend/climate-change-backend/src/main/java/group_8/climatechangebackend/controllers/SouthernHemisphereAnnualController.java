@@ -21,4 +21,8 @@ public class SouthernHemisphereAnnualController {
     }
 
     // Add other endpoints as needed
+    @GetMapping("/annual")
+    public List<SouthernHemisphereAnnual> getAllAnnualData() {
+        return service.findAll();
+    }
 }

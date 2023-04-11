@@ -19,4 +19,8 @@ public class NorthernHemisphereAnnualController {
     public List<NorthernHemisphereAnnual> getAllNorthernHemisphereAnnual() {
         return service.findAll();
     }
+    @GetMapping("/annual")
+    public List<NorthernHemisphereAnnual> getAllAnnualData() {
+        return service.findAll();
+    }
 }

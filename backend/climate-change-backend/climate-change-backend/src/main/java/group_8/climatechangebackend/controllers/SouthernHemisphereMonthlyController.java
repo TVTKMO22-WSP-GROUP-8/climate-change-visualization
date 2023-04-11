@@ -21,4 +21,8 @@ public class SouthernHemisphereMonthlyController {
     }
 
     // Add other endpoints as needed
+    @GetMapping("/monthly")
+    public List<SouthernHemisphereMonthly> getAllMonthlyData() {
+        return service.findAll();
+    }
 }
