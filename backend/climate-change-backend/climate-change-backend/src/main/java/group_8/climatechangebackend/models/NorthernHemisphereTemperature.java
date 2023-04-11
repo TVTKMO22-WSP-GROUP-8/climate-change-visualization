@@ -3,8 +3,9 @@ package group_8.climatechangebackend.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "hadcrut_global_monthly")
-public class GlobalMonthly {
+@Table(name = "northern_hemisphere_temperature")
+public class NorthernHemisphereTemperature {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -13,15 +14,18 @@ public class GlobalMonthly {
     private String time;
 
     @Column(name = "anomaly")
-    private double anomaly;
+    private Double anomaly;
 
     @Column(name = "lower_confidence_limit")
-    private double lowerConfidenceLimit;
+    private Double lowerConfidenceLimit;
 
     @Column(name = "upper_confidence_limit")
-    private double upperConfidenceLimit;
+    private Double upperConfidenceLimit;
 
-    // Add getters and setters
+    @Column(name = "frequency") // Add this attribute to distinguish between monthly and annual data
+    private String frequency;
+
+    // Getters and setters for all attributes
 
     public Long getId() {
         return this.id;
@@ -39,27 +43,37 @@ public class GlobalMonthly {
         this.time = time;
     }
 
-    public double getAnomaly() {
+    public Double getAnomaly() {
         return this.anomaly;
     }
 
-    public void setAnomaly(double anomaly) {
+    public void setAnomaly(Double anomaly) {
         this.anomaly = anomaly;
     }
 
-    public double getLowerConfidenceLimit() {
+    public Double getLowerConfidenceLimit() {
         return this.lowerConfidenceLimit;
     }
 
-    public void setLowerConfidenceLimit(double lowerConfidenceLimit) {
+    public void setLowerConfidenceLimit(Double lowerConfidenceLimit) {
         this.lowerConfidenceLimit = lowerConfidenceLimit;
     }
 
-    public double getUpperConfidenceLimit() {
+    public Double getUpperConfidenceLimit() {
         return this.upperConfidenceLimit;
     }
 
-    public void setUpperConfidenceLimit(double upperConfidenceLimit) {
+    public void setUpperConfidenceLimit(Double upperConfidenceLimit) {
         this.upperConfidenceLimit = upperConfidenceLimit;
     }
+
+    public String getFrequency() {
+        return this.frequency;
+    }
+
+    public void setFrequency(String frequency) {
+        this.frequency = frequency;
+    }
+
+    // ...
 }
