@@ -3,8 +3,8 @@ package group_8.climatechangebackend.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "northern_hemisphere_temperature")
-public class NorthernHemisphereTemperature {
+@Table(name = "southern_hemisphere_monthly")
+public class SouthernHemisphereMonthly {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,10 +22,7 @@ public class NorthernHemisphereTemperature {
     @Column(name = "upper_confidence_limit")
     private Double upperConfidenceLimit;
 
-    @Column(name = "frequency") // Add this attribute to distinguish between monthly and annual data
-    private String frequency;
-
-    // Getters and setters for all attributes
+    // Add getters and setters
 
     public Long getId() {
         return this.id;
@@ -66,14 +63,4 @@ public class NorthernHemisphereTemperature {
     public void setUpperConfidenceLimit(Double upperConfidenceLimit) {
         this.upperConfidenceLimit = upperConfidenceLimit;
     }
-
-    public String getFrequency() {
-        return this.frequency;
-    }
-
-    public void setFrequency(String frequency) {
-        this.frequency = frequency;
-    }
-
-    // ...
 }

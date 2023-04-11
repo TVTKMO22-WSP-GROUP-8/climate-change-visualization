@@ -1,7 +1,7 @@
 package group_8.climatechangebackend.controllers;
 
-import group_8.climatechangebackend.models.NorthernHemisphere2000;
-import group_8.climatechangebackend.services.NorthernHemisphere2000Service;
+import group_8.climatechangebackend.models.NorthernHemisphereAnnual;
+import group_8.climatechangebackend.services.NorthernHemisphereAnnualService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/northern-hemisphere-2000")
-public class NorthernHemisphere2000Controller {
+@RequestMapping("/api/northern-hemisphere-annual")
+public class NorthernHemisphereAnnualController {
     @Autowired
-    private NorthernHemisphere2000Service service;
+    private NorthernHemisphereAnnualService service;
 
     @GetMapping
-    public List<NorthernHemisphere2000> getAllNorthernHemisphere2000() {
+    public List<NorthernHemisphereAnnual> getAllNorthernHemisphereAnnual() {
         return service.findAll();
     }
 }

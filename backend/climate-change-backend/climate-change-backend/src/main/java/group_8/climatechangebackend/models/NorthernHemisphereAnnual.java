@@ -3,14 +3,11 @@ package group_8.climatechangebackend.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "global_temperature_data")
-public class GlobalTemperatureData {
+@Table(name = "northern_hemisphere_annual")
+public class NorthernHemisphereAnnual {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "record_type")
-    private String recordType;
 
     @Column(name = "time")
     private String time;
@@ -32,14 +29,6 @@ public class GlobalTemperatureData {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getRecordType() {
-        return this.recordType;
-    }
-
-    public void setRecordType(String recordType) {
-        this.recordType = recordType;
     }
 
     public String getTime() {

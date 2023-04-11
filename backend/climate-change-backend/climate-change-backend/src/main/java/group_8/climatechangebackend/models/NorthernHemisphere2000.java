@@ -1,6 +1,4 @@
-// NorthernHemisphere2000.java
 package group_8.climatechangebackend.models;
-
 import javax.persistence.*;
 
 @Entity
