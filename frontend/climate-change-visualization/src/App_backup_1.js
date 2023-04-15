@@ -15,6 +15,24 @@ function LoginForm({ onSubmit }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+
+// Coppied code start
+const [uname, setUname] = useState("repe");
+  const [pw, setPw] = useState("repe");
+  function credentialsAsRequestParams(){
+
+    const formData = new FormData();
+    formData.append('uname', uname);
+    formData.append('pw', pw);
+
+    //Save response token in localstorage
+    axios.post('http://localhost:8080/login', formData)
+      .then(response => localStorage.setItem("token", response.data))
+      .catch(e=>console.log(e.message))
+  }
+  
+// ends
+
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log('Submitting:', { username, password });
@@ -58,7 +76,7 @@ function App() {
   const fetchData = async (token) => {
     try {
       const config = {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       };
 
       const nhMonthlyResponse = await axios.get(
@@ -147,15 +165,27 @@ function App() {
   updateChartData();
 }, [selectedDataType, nhAnnualData, shAnnualData, nhMonthlyData, shMonthlyData, nh2000Data]);
 
-  const handleLogin = async (username, password) => {
-    try {
-      const token = await authenticate(username, password);
+ const handleLogin = async (username, password) => {
+  try {
+    const response = await fetch("http://localhost:8080/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ uname: username, pw: password }),
+    });
+
+    if (response.ok) {
+      const token = await response.text();
+      localStorage.setItem("token", token);
       setIsLoggedIn(true);
-      fetchData(token);
-    } catch (error) {
-      console.error('Error during login:', error);
+    } else {
+      console.error("Login failed");
     }
-  };
+  } catch (error) {
+    console.error("Error during login", error);
+  }
+};
 
   async function authenticate(username, password) {
     try {
@@ -220,7 +250,6 @@ return (
     <h1>Climate Change Data</h1>
     {isLoggedIn ? (
       <>
-
         <div className="buttons">
           <button onClick={handleAnnualButtonClick}>Annual</button>
           <button onClick={handleMonthlyButtonClick}>Monthly</button>
@@ -237,8 +266,6 @@ return (
             bottom: 5,
           }}
         >
-
-
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="time" />
           <YAxis />
@@ -258,7 +285,7 @@ return (
         <LoginForm onSubmit={handleLogin} />
       </>
     )}
-  <a href="https://www.metoffice.gov.uk/hadobs/hadcrut5/">HADCRUT5</a>
+    {/* Add links to data sources, and the description of the graph here */}
   </div>
 );
 }
