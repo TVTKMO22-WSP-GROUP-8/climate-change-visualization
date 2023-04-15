@@ -251,14 +251,17 @@ return (
             <Line type="monotone" dataKey="Anomaly" stroke="#ff0000" />
           )}
         </LineChart>
+		<a href="https://www.metoffice.gov.uk/hadobs/hadcrut5/">HADCRUT5</a>
       </>
     ) : (
       <>
+	    
         {isLoggedIn ? 'Logged in' : 'Not logged in'}
         <LoginForm onSubmit={handleLogin} />
       </>
+	  
     )}
-  <a href="https://www.metoffice.gov.uk/hadobs/hadcrut5/">HADCRUT5</a>
+
   </div>
 );
 }
