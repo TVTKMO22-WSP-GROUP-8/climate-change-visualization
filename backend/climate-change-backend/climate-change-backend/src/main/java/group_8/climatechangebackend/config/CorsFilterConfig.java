@@ -1,4 +1,4 @@
-package group_8.climatechangebackend;
+package group_8.climatechangebackend.config;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -32,9 +32,11 @@ public class CorsFilterConfig implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) {
+      // TODO document why this method is empty
     }
 
     @Override
     public void destroy() {
+      // TODO document why this method is empty
     }
 }
