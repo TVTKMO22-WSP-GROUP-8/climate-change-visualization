@@ -218,38 +218,42 @@ function App() {
 return (
   <div className="App">
     <h1>Climate Change Data</h1>
-    <div className="buttons">
-      <button onClick={handleAnnualButtonClick}>Annual</button>
-      <button onClick={handleMonthlyButtonClick}>Monthly</button>
-      <button onClick={handle2000ButtonClick}>2000 years</button>
-    </div>
-    {isLoggedIn ? 'Logged in' : 'Not logged in'}
     {isLoggedIn ? (
-      <LineChart
-        width={1000}
-        height={500}
-        data={chartData}
-        margin={{
-          top: 5,
-          right: 30,
-          left: 20,
-          bottom: 5,
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="time" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Line type="monotone" dataKey="Northern Hemisphere" stroke="#8884d8" />
-        <Line type="monotone" dataKey="Southern Hemisphere" stroke="#82ca9d" />
-        <Line type="monotone" dataKey="Global" stroke="#ff7300" />
-        {selectedDataType === '2000' && (
-          <Line type="monotone" dataKey="Anomaly" stroke="#ff0000" />
-        )}
-      </LineChart>
+      <>
+        <div className="buttons">
+          <button onClick={handleAnnualButtonClick}>Annual</button>
+          <button onClick={handleMonthlyButtonClick}>Monthly</button>
+          <button onClick={handle2000ButtonClick}>2000 years</button>
+        </div>
+        <LineChart
+          width={1000}
+          height={500}
+          data={chartData}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="time" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="Northern Hemisphere" stroke="#8884d8" />
+          <Line type="monotone" dataKey="Southern Hemisphere" stroke="#82ca9d" />
+          <Line type="monotone" dataKey="Global" stroke="#ff7300" />
+          {selectedDataType === '2000' && (
+            <Line type="monotone" dataKey="Anomaly" stroke="#ff0000" />
+          )}
+        </LineChart>
+      </>
     ) : (
-      <LoginForm onSubmit={handleLogin} />
+      <>
+        {isLoggedIn ? 'Logged in' : 'Not logged in'}
+        <LoginForm onSubmit={handleLogin} />
+      </>
     )}
     {/* Add links to data sources, and the description of the graph here */}
   </div>
