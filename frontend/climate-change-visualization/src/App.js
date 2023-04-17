@@ -65,28 +65,27 @@ function App() {
         'http://localhost:8080/api/northern-hemisphere-monthly',
         config
       );
+	  console.log('NH Monthly data:', nhMonthlyResponse.data);
       const shMonthlyResponse = await axios.get(
         'http://localhost:8080/api/southern-hemisphere-monthly',
         config
       );
+	  console.log('SH Monthly data:', shMonthlyResponse.data);
       const nhAnnualResponse = await axios.get(
         'http://localhost:8080/api/northern-hemisphere-annual',
         config
       );
+	  console.log('NH Annual data:', nhAnnualResponse.data);
       const shAnnualResponse = await axios.get(
         'http://localhost:8080/api/southern-hemisphere-annual',
         config
       );
+	  console.log('SH Annual data:', shAnnualResponse.data);
       const nh2000Response = await axios.get(
         'http://localhost:8080/api/northern-hemisphere-2000',
         config
       );
-
-      console.log('NH Monthly data:', nhMonthlyResponse.data);
-      console.log('SH Monthly data:', shMonthlyResponse.data);
-      console.log('NH Annual data:', nhAnnualResponse.data);
-      console.log('SH Annual data:', shAnnualResponse.data);
-      console.log('NH 2000 data:', nh2000Response.data);
+	  console.log('NH 2000 data:', nh2000Response.data);
 
       if (Array.isArray(nhMonthlyResponse.data)) {
         setNhMonthlyData(nhMonthlyResponse.data);
@@ -105,7 +104,12 @@ function App() {
       } else {
         console.error('Unexpected data format for Northern Hemisphere Annual');
       }
-	        if (Array.isArray(nh2000Response.data)) {
+	  if (Array.isArray(shAnnualResponse.data)) {
+	    setShAnnualData(shAnnualResponse.data);
+	  } else {
+	    console.error('Unexpected data format for Southern Hemisphere Annual');
+	  }
+	  if (Array.isArray(nh2000Response.data)) {
         setNh2000Data(nh2000Response.data);
       } else {
         console.error('Unexpected data format for Northern Hemisphere 2000');
@@ -115,37 +119,37 @@ function App() {
     }
   };
 
-  useEffect(() => {
+useEffect(() => {
   const updateChartData = () => {
     let combinedData = [];
 
     if (selectedDataType === 'annual' && nhAnnualData.length && shAnnualData.length) {
       combinedData = nhAnnualData.map((item, index) => ({
-        time: item.time,
-        'Northern Hemisphere': item.anomaly,
-        'Southern Hemisphere': shAnnualData[index].anomaly,
-        Global: (item.anomaly + shAnnualData[index].anomaly) / 2,
+        time: item.time || '',
+        'Northern Hemisphere': item.anomaly || null,
+        'Southern Hemisphere': shAnnualData[index].anomaly || null,
+        Global: (item.anomaly + shAnnualData[index].anomaly) / 2 || null,
       }));
     } else if (selectedDataType === 'monthly' && nhMonthlyData.length && shMonthlyData.length) {
       combinedData = nhMonthlyData.map((item, index) => ({
-        time: item.time,
-        'Northern Hemisphere': item.anomaly,
-        'Southern Hemisphere': shMonthlyData[index].anomaly,
-        Global: (item.anomaly + shMonthlyData[index].anomaly) / 2,
+        time: item.time || '',
+        'Northern Hemisphere': item.anomaly || null,
+        'Southern Hemisphere': shMonthlyData[index].anomaly || null,
+        Global: (item.anomaly + shMonthlyData[index].anomaly) / 2 || null,
       }));
     } else if (selectedDataType === '2000' && nh2000Data.length) {
-      combinedData = nh2000Data.map((item) => ({
-        time: item.time,
-        Anomaly: item.anomaly,
-      }));
-    }
+    combinedData = nh2000Data.map((item) => ({
+      time: item.time || '',
+      Anomaly: item.anomaly || null,
+    }));
+  }
 
     setChartData(combinedData);
 	console.log('chartData:', chartData);
   };
 
   updateChartData();
-}, [selectedDataType, nhAnnualData, shAnnualData, nhMonthlyData, shMonthlyData, nh2000Data]);
+}, [isLoggedIn, selectedDataType, nhAnnualData, shAnnualData, nhMonthlyData, shMonthlyData, nh2000Data]);
 
   const handleLogin = async (username, password) => {
     try {
@@ -186,6 +190,7 @@ function App() {
         Global: (item.anomaly + shAnnualData[index].anomaly) / 2,
       }));
       setChartData(combinedData);
+	  console.log("Annual combined data:", combinedData);
     }
   };
 
@@ -200,27 +205,35 @@ function App() {
         Global: (item.anomaly + shMonthlyData[index].anomaly) / 2,
       }));
       setChartData(combinedData);
+	  console.log("Monthly combined data:", combinedData);
     }
   };
 
-  const handle2000ButtonClick = () => {
-	console.log('2000 years button clicked');  
-	setSelectedDataType('2000');
-    if (nh2000Data.length) {
-      const combinedData = nh2000Data.map((item) => ({
-        time: item.time,
-        Anomaly: item.anomaly,
-      }));
-	  console.log('Combined data:', combinedData);
-      setChartData(combinedData);
-    }
-  };
+	const handle2000ButtonClick = () => {
+	  console.log('2000 years button clicked');
+	  setSelectedDataType('2000');
+	  if (selectedDataType === '2000' && nh2000Data.length) {
+		const combinedData = nh2000Data.map((item) => ({
+		time: item.year || '',
+		T: item.T || null,
+		LF: item.LF || null,
+		LFMinus: item.LFMinus || null,
+		LFPlus: item.LFPlus || null,
+		AMinus: item.AMinus || null,
+		APlus: item.APlus || null,
+		ABMinus: item.ABMinus || null,
+		ABPlus: item.ABPlus || null,
+	  }));
+		setChartData(combinedData);
+		console.log("2000 years combined data:", combinedData);
+	  }
+	};
+
 return (
   <div className="App">
     <h1>Climate Change Data</h1>
     {isLoggedIn ? (
       <>
-
         <div className="buttons">
           <button onClick={handleAnnualButtonClick}>Annual</button>
           <button onClick={handleMonthlyButtonClick}>Monthly</button>
@@ -237,32 +250,41 @@ return (
             bottom: 5,
           }}
         >
-
-
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="time" />
           <YAxis />
           <Tooltip />
           <Legend />
-          <Line type="monotone" dataKey="Northern Hemisphere" stroke="#8884d8" />
-          <Line type="monotone" dataKey="Southern Hemisphere" stroke="#82ca9d" />
-          <Line type="monotone" dataKey="Global" stroke="#ff7300" />
+          {selectedDataType !== '2000' && (
+            <>
+              <Line type="monotone" dataKey="Northern Hemisphere" stroke="#8884d8" />
+              <Line type="monotone" dataKey="Southern Hemisphere" stroke="#82ca9d" />
+              <Line type="monotone" dataKey="Global" stroke="#ff7300" />
+            </>
+          )}
           {selectedDataType === '2000' && (
-            <Line type="monotone" dataKey="Anomaly" stroke="#ff0000" />
+            <>
+              <Line type="monotone" dataKey="T" stroke="#ff0000" />
+              <Line type="monotone" dataKey="LF" stroke="#8884d8" />
+              <Line type="monotone" dataKey="LFMinus" stroke="#82ca9d" />
+              <Line type="monotone" dataKey="LFPlus" stroke="#ff7300" />
+              <Line type="monotone" dataKey="AMinus" stroke="#2c3e50" />
+              <Line type="monotone" dataKey="APlus" stroke="#8e44ad" />
+              <Line type="monotone" dataKey="ABMinus" stroke="#f1c40f" />
+              <Line type="monotone" dataKey="ABPlus" stroke="#e74c3c" />
+            </>
           )}
         </LineChart>
-		<a href="https://www.metoffice.gov.uk/hadobs/hadcrut5/">HADCRUT5</a>
+        <a href="https://www.metoffice.gov.uk/hadobs/hadcrut5/">HADCRUT5</a>
       </>
     ) : (
       <>
-	    
         {isLoggedIn ? 'Logged in' : 'Not logged in'}
         <LoginForm onSubmit={handleLogin} />
       </>
-	  
     )}
-
   </div>
 );
 }
 export default App;
+
