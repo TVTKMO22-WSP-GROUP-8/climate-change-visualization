@@ -214,16 +214,16 @@ useEffect(() => {
 	  setSelectedDataType('2000');
 	  if (selectedDataType === '2000' && nh2000Data.length) {
 		const combinedData = nh2000Data.map((item) => ({
-		time: item.year || '',
-		T: item.T || null,
-		LF: item.LF || null,
-		LFMinus: item.LFMinus || null,
-		LFPlus: item.LFPlus || null,
-		AMinus: item.AMinus || null,
-		APlus: item.APlus || null,
-		ABMinus: item.ABMinus || null,
-		ABPlus: item.ABPlus || null,
-	  }));
+		  time: item.year || '',
+		  T: item.t || null,
+		  LF: item.lf || null,
+		  LFMinus: item.lfminus || null,
+		  LFPlus: item.lfplus || null,
+		  AMinus: item.aminus || null,
+		  APlus: item.aplus || null,
+		  ABMinus: item.abminus || null,
+		  ABPlus: item.abplus || null,
+		}));
 		setChartData(combinedData);
 		console.log("2000 years combined data:", combinedData);
 	  }
@@ -251,7 +251,7 @@ return (
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="time" />
+          <XAxis dataKey="year" />
           <YAxis />
           <Tooltip />
           <Legend />
