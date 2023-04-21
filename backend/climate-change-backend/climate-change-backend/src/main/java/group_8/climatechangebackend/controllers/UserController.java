@@ -38,15 +38,17 @@ public class UserController {
         authenticate(user.getUsername(), user.getPassword());
         final UserDetails userDetails = userService.loadUserByUsername(user.getUsername());
         final String jwt = jwtUtil.generateToken(userDetails);
+        System.out.println("Generated token: " + jwt); // Add this line for debugging
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
-    private void authenticate(String username, String password) throws Exception {
+
+    private void authenticate(String username, String password) throws BadCredentialsException {
         try {
             userService.authenticate(username, password);
         } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
+            throw new BadCredentialsException("USER_DISABLED", e);
         } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
+            throw new BadCredentialsException("INVALID_CREDENTIALS", e);
         }
     }
 

@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-ro
 import LoginForm from './LoginForm';
 import Register from './Register';
 import Dashboard from './Dashboard';
-import CreateView from './CreateView';
 import MainContent from './MainContent';
 
 function App() {
@@ -54,10 +53,6 @@ function App() {
           <Route
             path="/dashboard"
             element={isLoggedIn ? <Dashboard token={token} /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/createview"
-            element={isLoggedIn ? <CreateView /> : <Navigate to="/login" />}
           />
           <Route
             path="/"

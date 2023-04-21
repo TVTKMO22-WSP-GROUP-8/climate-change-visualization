@@ -48,9 +48,11 @@ public class VisualizationController {
         return ResponseEntity.ok(createdView);
     }
 
-    @GetMapping("/api/visualizations")
-    public ResponseEntity<List<VisualizationViewDTO>> getVisualizationViewsForUser(Principal principal) {
-        UserDetails userDetails = (UserDetails) ((Authentication) principal).getPrincipal();
+    @GetMapping("/visualizations")
+public ResponseEntity<List<VisualizationViewDTO>> getVisualizationViewsForUser(@AuthenticationPrincipal UserDetails userDetails) {
+    if (userDetails == null) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         String username = userDetails.getUsername();
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     
@@ -67,6 +69,7 @@ public class VisualizationController {
         }
         return ResponseEntity.ok(visualizationViewDtos);
     }
+    
     
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteVisualizationView(@PathVariable("id") Integer id, Principal principal) {
