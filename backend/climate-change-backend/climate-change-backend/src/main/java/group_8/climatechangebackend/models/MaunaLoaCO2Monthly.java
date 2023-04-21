@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class MaunaLoaCO2Monthly {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(name = "year")
     private int year;
@@ -35,11 +35,11 @@ public class MaunaLoaCO2Monthly {
 
     //Getters And Setters
 
-    public Long getId() {
+    public Integer getId() {
         return this.id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

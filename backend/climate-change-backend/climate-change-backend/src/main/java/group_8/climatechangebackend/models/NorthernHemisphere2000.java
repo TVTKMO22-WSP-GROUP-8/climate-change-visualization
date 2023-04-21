@@ -6,8 +6,7 @@ import javax.persistence.*;
 public class NorthernHemisphere2000 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    private Integer id;
     private int year;
     private double T;
     private double LF;
@@ -20,11 +19,11 @@ public class NorthernHemisphere2000 {
 
     // Add getters and setters
 
-    public Long getId() {
+    public int getId() {
         return this.id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

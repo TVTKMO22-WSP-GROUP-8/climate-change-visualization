@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class GlobalAnnual {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(name = "time")
     private int year;
@@ -23,11 +23,11 @@ public class GlobalAnnual {
 
     // Add getters and setters
 
-    public Long getId() {
+    public Integer getId() {
         return this.id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
