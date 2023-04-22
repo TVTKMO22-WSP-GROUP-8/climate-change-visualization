@@ -1,41 +1,29 @@
-// src/LoginForm.js
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router';
-import './LoginForm.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-
-function LoginForm({ onLogin, setUserToken }) {
-  const [username, setUsername] = useState('root');
-  const [password, setPassword] = useState('root');
+const LoginForm = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const handleLogin = async () => {
+    setLoading(true);
     try {
-		console.log('Sending login request with:', { username, password });
-      const response = await axios.post('http://localhost:8080/api/user/login', {
-        username,
-        password,
-      });
-		console.log('Full response:', response);
-      if (response.status === 200) {
-        console.log('Login successful');
-        console.log('Response data:', response.data); // Added this line to check the response data
-        const token = response.data.token; // Replace 'token' with the actual key holding the token in the response data
-        setUserToken(token); // Update the token in the App.js state
-        console.log('Token set:', token);
-        onLogin(); // Set the isLoggedIn state to true in App.js
-        navigate('/dashboard');
-      } else {
-        console.error('Login failed');
-      }
+      const response = await axios.post("/api/user/login", { username, password });
+      console.log("Full response:", response);
+      console.log("Login successful");
+      const token = response.headers.authorization.substring(7); // Extract the token without "Bearer "
+      console.log("Token set:", token);
+      localStorage.setItem("authToken", token);
+      setLoading(false);
+      navigate("/dashboard");
     } catch (error) {
-      if (error.response && error.response.status === 403) {
-        alert("Wrong username or password");
-      } else {
-        console.error('Error during login:', error);
-      }
+      console.error("Error logging in:", error);
+      setError("Invalid username or password");
+      setLoading(false);
     }
   };
 

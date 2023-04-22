@@ -1,27 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import CreateView from './CreateView';
-import axios from 'axios';
-import './Dashboard.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import CreateView from "./CreateView"; // Import the CreateView component
 
-function Dashboard({ token }) {
-  console.log('Token in Dashboard:', token);
-
-  const [views, setViews] = useState([]);
+const Dashboard = () => {
+  const [data, setData] = useState([]);
+  const [views, setViews] = useState([]); // Declare views and setViews
+  const token = localStorage.getItem("token"); 
+  const fetchData = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      console.log("Token in Dashboard:", token);
+      const response = await axios.get("/api/visualization/visualizations", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setData(response.data);
+      setViews(response.data); // Set views with the fetched data
+    } catch (error) {
+      console.log("Error fetching data:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        console.log(token);
-        const response = await axios.get('http://localhost:8080/api/visualization/visualizations', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setViews(response.data);
-        console.log('Visualization data:', response.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
     fetchData();
   }, [token]);
 
