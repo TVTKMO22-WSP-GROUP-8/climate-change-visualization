@@ -1,5 +1,7 @@
 package group_8.climatechangebackend.config;
 
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import group_8.climatechangebackend.services.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

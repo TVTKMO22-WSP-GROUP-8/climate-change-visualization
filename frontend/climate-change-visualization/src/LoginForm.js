@@ -13,11 +13,12 @@ function LoginForm({ onLogin, setUserToken }) {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
+		console.log('Sending login request with:', { username, password });
       const response = await axios.post('http://localhost:8080/api/user/login', {
         username,
         password,
       });
-
+		console.log('Full response:', response);
       if (response.status === 200) {
         console.log('Login successful');
         console.log('Response data:', response.data); // Added this line to check the response data

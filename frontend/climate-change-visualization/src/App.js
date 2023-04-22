@@ -17,7 +17,10 @@ function App() {
   const handleRegisterSuccess = () => {
     setIsLoggedIn(false);
   };
-
+	const setUserToken = (token) => {
+	  localStorage.setItem('token', token);
+	  setToken(token);
+	}
   return (
     <Router>
       <div className="App">

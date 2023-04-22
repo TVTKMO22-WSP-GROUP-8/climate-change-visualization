@@ -5,7 +5,8 @@ import './Dashboard.css';
 
 function Dashboard({token}) {
 	console.log('Token in Dashboard:', token);
-	const [views, setViews] = useState([]);
+
+	const [views, setViews, data, setData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -15,6 +16,7 @@ function Dashboard({token}) {
 		  headers: { Authorization: `Bearer ${token}` },
 		});
         setViews(response.data);
+		console.log('Visualization data:', response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }

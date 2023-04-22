@@ -13,7 +13,7 @@ import './MainContent.css';
 
 function MainContent({ isLoggedIn, handleLogin, ...rest }){
 	// Replace the current token-related lines in your component with these lines
-	const token = localStorage.getItem('token') || '';
+	const token = localStorage.getItem('token');
 	const annualDataUrl = token ? `http://localhost:8080/api/data/annual?token=${token}` : '';
 	const monthlyDataUrl = token ? `http://localhost:8080/api/data/monthly?token=${token}` : '';
 	const twoThousandYearsDataUrl = token ? `http://localhost:8080/api/data/2000years?token=${token}` : '';
@@ -26,6 +26,7 @@ function MainContent({ isLoggedIn, handleLogin, ...rest }){
 	const [selectedDataType, setSelectedDataType] = useState('monthly');
 
 	const fetchData = useCallback(async (token) => {
+		console.log('Token:', token);
 	  try {
 		const config = {
 		  headers: { Authorization: `Bearer ${token}` },
