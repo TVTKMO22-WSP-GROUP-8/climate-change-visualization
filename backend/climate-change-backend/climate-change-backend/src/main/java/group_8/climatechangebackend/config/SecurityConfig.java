@@ -1,12 +1,13 @@
 package group_8.climatechangebackend.config;
 
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import group_8.climatechangebackend.services.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,20 +19,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
-    @Autowired
-    private JwtUtil jwtUtil;
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final CustomUserDetailsService customUserDetailsService;
+    private final JwtUtil jwtUtil;
 
-    public SecurityConfig(BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    public SecurityConfig(CustomUserDetailsService customUserDetailsService, JwtUtil jwtUtil) {
+        this.customUserDetailsService = customUserDetailsService;
+        this.jwtUtil = jwtUtil;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager(), jwtUtil);
+        jwtAuthenticationFilter.setAuthenticationSuccessHandler(new CustomAuthenticationSuccessHandler(jwtUtil));
         jwtAuthenticationFilter.setFilterProcessesUrl("/api/user/login");
 
         http
@@ -41,12 +40,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/**").permitAll()
                 .anyRequest().authenticated()
             .and()
-                .addFilter(jwtAuthenticationFilter)
-                .addFilterBefore(new JwtAuthenticationFilter(authenticationManager(), jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     @Autowired
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(customUserDetailsService).passwordEncoder(bCryptPasswordEncoder);
+    public void configure(AuthenticationManagerBuilder auth, BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
+        auth.authenticationProvider(authenticationProvider(bCryptPasswordEncoder));
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider(BCryptPasswordEncoder bCryptPasswordEncoder) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(customUserDetailsService);
+        provider.setPasswordEncoder(bCryptPasswordEncoder);
+        return provider;
+    }
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

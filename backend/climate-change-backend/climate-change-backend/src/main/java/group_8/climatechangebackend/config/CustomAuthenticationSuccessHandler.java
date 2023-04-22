@@ -1,6 +1,7 @@
 package group_8.climatechangebackend.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -16,6 +17,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
     private final JwtUtil jwtUtil;
 
+    @Autowired
     public CustomAuthenticationSuccessHandler(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
     }

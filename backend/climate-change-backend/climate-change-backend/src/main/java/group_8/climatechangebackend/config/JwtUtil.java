@@ -7,6 +7,9 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+
+import group_8.climatechangebackend.repositories.JwtUtilService;
+
 import javax.annotation.PostConstruct;
 import javax.crypto.SecretKey;
 
@@ -17,7 +20,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Component
-public class JwtUtil {
+public class JwtUtil implements JwtUtilService{
 
     @Value("${jwt.secret}")
     private String secret;
@@ -25,7 +28,6 @@ public class JwtUtil {
     @Value("${jwt.expiration}")
     private long jwtExpirationInMillis;
 
-    //private static final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();

@@ -1,6 +1,10 @@
 package group_8.climatechangebackend.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import group_8.climatechangebackend.repositories.JwtUtilService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,11 +20,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-    private final AuthenticationManager authenticationManager;
-    private final JwtUtil jwtUtil;
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
-        this.authenticationManager = authenticationManager;
+    private final JwtUtilService jwtUtil;
+
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtUtilService jwtUtil) {
+        setAuthenticationManager(authenticationManager);
+        setFilterProcessesUrl("/api/user/login");
         this.jwtUtil = jwtUtil;
     }
 
@@ -31,8 +36,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             if (request.getInputStream().available() > 0) {
                 LoginRequest loginRequest = new ObjectMapper()
                         .readValue(request.getInputStream(), LoginRequest.class);
-    
-                return authenticationManager.authenticate(
+
+                return getAuthenticationManager().authenticate(
                         new UsernamePasswordAuthenticationToken(
                                 loginRequest.getUsername(),
                                 loginRequest.getPassword(),
@@ -46,7 +51,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             throw new RuntimeException(e);
         }
     }
-    
+        
     @Override
     protected void successfulAuthentication(HttpServletRequest request,
                                             HttpServletResponse response,
