@@ -2,7 +2,7 @@ package group_8.climatechangebackend.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import group_8.climatechangebackend.repositories.JwtUtilService;
+import group_8.climatechangebackend.services.JwtUtilService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,9 +21,9 @@ import java.util.ArrayList;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private final JwtUtilService jwtUtil;
+    private final JwtUtil jwtUtil;
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtUtilService jwtUtil) {
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
         setAuthenticationManager(authenticationManager);
         setFilterProcessesUrl("/api/user/login");
         this.jwtUtil = jwtUtil;

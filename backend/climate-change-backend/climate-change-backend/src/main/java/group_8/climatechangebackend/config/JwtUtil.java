@@ -8,11 +8,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import group_8.climatechangebackend.repositories.JwtUtilService;
+import group_8.climatechangebackend.services.JwtUtilService;
 
 import javax.annotation.PostConstruct;
 import javax.crypto.SecretKey;
-
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,7 +19,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Component
-public class JwtUtil implements JwtUtilService{
+public class JwtUtil {
 
     @Value("${jwt.secret}")
     private String secret;
