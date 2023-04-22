@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-router-dom';
+import axios from 'axios';
 import LoginForm from './LoginForm';
 import Register from './Register';
 import Dashboard from './Dashboard';
@@ -34,6 +35,22 @@ function App() {
       setIsLoggedIn(true);
     }
   }, [token]);
+
+  // Add the following code to intercept all API requests and add the Authorization header with the user token
+  useEffect(() => {
+    axios.interceptors.request.use(
+      (config) => {
+        const token = localStorage.getItem('token');
+        if (token) {
+          config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
+      }
+    );
+  }, []);
 
   return (
     <Router>
