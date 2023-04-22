@@ -10,7 +10,7 @@ public class NorthernHemisphereAnnual {
     private Long id;
 
     @Column(name = "time")
-    private String time;
+    private Integer time;
 
     @Column(name = "anomaly")
     private double anomaly;
@@ -31,11 +31,11 @@ public class NorthernHemisphereAnnual {
         this.id = id;
     }
 
-    public String getTime() {
+    public Integer getTime() {
         return this.time;
     }
 
-    public void setTime(String time) {
+    public void setTime(Integer time) {
         this.time = time;
     }
 

@@ -1,0 +1,48 @@
+2023-04-22 11:39:16.080  INFO 16880 --- [main] g.c.ClimateChangeBackendApplication      : Starting ClimateChangeBackendApplication using Java 17.0.6 on SAIBRONE with PID 16880 (C:\Users\saibr\Desktop\climate-change-visualization\backend\climate-change-backend\climate-change-backend\target\classes started by saibr in C:\Users\saibr\Desktop\climate-change-visualization)
+2023-04-22 11:39:16.082  INFO 16880 --- [main] g.c.ClimateChangeBackendApplication      : No active profile set, falling back to 1 default profile: "default"
+2023-04-22 11:39:16.658  INFO 16880 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-04-22 11:39:16.747  INFO 16880 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 78 ms. Found 12 JPA repository interfaces.
+2023-04-22 11:39:17.311  INFO 16880 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-04-22 11:39:17.324  INFO 16880 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-04-22 11:39:17.325  INFO 16880 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.73]
+2023-04-22 11:39:17.421  INFO 16880 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-04-22 11:39:17.422  INFO 16880 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1290 ms
+2023-04-22 11:39:17.602  INFO 16880 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-04-22 11:39:17.645  INFO 16880 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.6.15.Final
+2023-04-22 11:39:17.793  INFO 16880 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2023-04-22 11:39:17.875  INFO 16880 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-04-22 11:39:18.171  INFO 16880 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-04-22 11:39:18.205  INFO 16880 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2023-04-22 11:39:18.887  INFO 16880 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-04-22 11:39:18.895  INFO 16880 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-04-22 11:39:19.622  INFO 16880 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@21539796, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@215f8d7, org.springframework.security.web.context.SecurityContextPersistenceFilter@4505015b, org.springframework.security.web.header.HeaderWriterFilter@34376069, org.springframework.security.web.authentication.logout.LogoutFilter@62878d7c, group_8.climatechangebackend.config.JwtAuthenticationFilter@69d2c460, group_8.climatechangebackend.config.JwtAuthenticationFilter@34a99d8, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@67167f8f, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1c25385a, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3e984100, org.springframework.security.web.session.SessionManagementFilter@6cac0334, org.springframework.security.web.access.ExceptionTranslationFilter@1ecf784f, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@355b4c34]
+2023-04-22 11:39:19.767  INFO 16880 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2023-04-22 11:39:19.931  INFO 16880 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-04-22 11:39:19.937  INFO 16880 --- [main] g.c.ClimateChangeBackendApplication      : Started ClimateChangeBackendApplication in 4.237 seconds (JVM running for 4.619)
+2023-04-22 11:39:40.128  INFO 16880 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-04-22 11:39:40.128  INFO 16880 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-04-22 11:39:40.129  INFO 16880 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2023-04-22 12:18:23.548  INFO 17684 --- [main] g.c.ClimateChangeBackendApplication      : Starting ClimateChangeBackendApplication using Java 17.0.6 on SAIBRONE with PID 17684 (C:\Users\saibr\Desktop\climate-change-visualization\backend\climate-change-backend\climate-change-backend\target\classes started by saibr in C:\Users\saibr\Desktop\climate-change-visualization)
+2023-04-22 12:18:23.558  INFO 17684 --- [main] g.c.ClimateChangeBackendApplication      : No active profile set, falling back to 1 default profile: "default"
+2023-04-22 12:18:24.204  INFO 17684 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-04-22 12:18:24.305  INFO 17684 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 89 ms. Found 12 JPA repository interfaces.
+2023-04-22 12:18:25.052  INFO 17684 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-04-22 12:18:25.068  INFO 17684 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-04-22 12:18:25.068  INFO 17684 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.73]
+2023-04-22 12:18:25.209  INFO 17684 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-04-22 12:18:25.209  INFO 17684 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1586 ms
+2023-04-22 12:18:25.463  INFO 17684 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-04-22 12:18:25.518  INFO 17684 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.6.15.Final
+2023-04-22 12:18:25.703  INFO 17684 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2023-04-22 12:18:25.801  INFO 17684 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-04-22 12:18:26.102  INFO 17684 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-04-22 12:18:26.138  INFO 17684 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2023-04-22 12:18:26.893  INFO 17684 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-04-22 12:18:26.903  INFO 17684 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-04-22 12:18:27.733  INFO 17684 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@32eb38e5, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@73633230, org.springframework.security.web.context.SecurityContextPersistenceFilter@6329a5b9, org.springframework.security.web.header.HeaderWriterFilter@1ecf784f, org.springframework.security.web.authentication.logout.LogoutFilter@5862ab28, group_8.climatechangebackend.config.JwtAuthenticationFilter@21539796, group_8.climatechangebackend.config.JwtAuthenticationFilter@215f8d7, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4505015b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5add7380, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@69d2c460, org.springframework.security.web.session.SessionManagementFilter@34376069, org.springframework.security.web.access.ExceptionTranslationFilter@6a4d57b7, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@702432cc]
+2023-04-22 12:18:27.909  INFO 17684 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2023-04-22 12:18:28.083  INFO 17684 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-04-22 12:18:28.099  INFO 17684 --- [main] g.c.ClimateChangeBackendApplication      : Started ClimateChangeBackendApplication in 4.953 seconds (JVM running for 5.341)
+2023-04-22 12:18:52.373  INFO 17684 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-04-22 12:18:52.373  INFO 17684 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-04-22 12:18:52.374  INFO 17684 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
