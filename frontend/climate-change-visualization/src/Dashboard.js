@@ -3,20 +3,20 @@ import CreateView from './CreateView';
 import axios from 'axios';
 import './Dashboard.css';
 
-function Dashboard({token}) {
-	console.log('Token in Dashboard:', token);
+function Dashboard({ token }) {
+  console.log('Token in Dashboard:', token);
 
-	const [views, setViews, data, setData] = useState([]);
+  const [views, setViews] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-		console.log(token); // Add this line to log the token value
-		const response = await axios.get('http://localhost:8080/api/visualization/visualizations', {
-		  headers: { Authorization: `Bearer ${token}` },
-		});
+        console.log(token);
+        const response = await axios.get('http://localhost:8080/api/visualization/visualizations', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setViews(response.data);
-		console.log('Visualization data:', response.data);
+        console.log('Visualization data:', response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -36,13 +36,11 @@ function Dashboard({token}) {
       console.error('Error while deleting the view:', error);
     }
   };
-	// Add this function in the Dashboard component
-	const handleNewView = (newView) => {
-	  setViews([...views, newView]);
-	};
 
-	// Pass the handleNewView function to the CreateView component
-	<CreateView token={token} onNewView={handleNewView} />
+  const handleNewView = (newView) => {
+    setViews([...views, newView]);
+  };
+
   return (
     <div>
       <h2>Dashboard</h2>
@@ -64,4 +62,5 @@ function Dashboard({token}) {
     </div>
   );
 }
+
 export default Dashboard;
