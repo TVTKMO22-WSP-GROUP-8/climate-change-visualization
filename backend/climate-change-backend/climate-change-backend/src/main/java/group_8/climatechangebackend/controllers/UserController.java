@@ -1,6 +1,7 @@
 package group_8.climatechangebackend.controllers;
 import group_8.climatechangebackend.models.AuthenticationResponse;
 import group_8.climatechangebackend.config.JwtUtil;
+import org.springframework.http.HttpHeaders;
 import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,7 +40,10 @@ public class UserController {
 
         System.out.println("Generated token: " + jwt); // line for debugging
 
-        return ResponseEntity.ok(new AuthenticationResponse(jwt));
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + jwt);
+
+        return ResponseEntity.ok().headers(headers).build();
     }
     
     private void authenticate(String username, String password) throws BadCredentialsException {

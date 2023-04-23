@@ -1,31 +1,36 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+// src/LoginForm.js
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router';
+import './LoginForm.css';
 
-const LoginForm = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+function LoginForm({ onLogin, setUserToken,setIsLoggedIn }) {
+  const [username, setUsername] = useState('root');
+  const [password, setPassword] = useState('root');
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.post("/api/user/login", { username, password });
-      console.log("Full response:", response);
-      console.log("Login successful");
-      const token = response.headers.authorization.substring(7); // Extract the token without "Bearer "
-      console.log("Token set:", token);
-      localStorage.setItem("authToken", token);
-      setLoading(false);
-      navigate("/dashboard");
-    } catch (error) {
-      console.error("Error logging in:", error);
-      setError("Invalid username or password");
-      setLoading(false);
-    }
-  };
+	const handleLogin = async (e) => {
+	  e.preventDefault();
+
+	  try {
+		const response = await axios.post("http://localhost:8080/api/user/login", {
+		  username,
+		  password,
+		});
+
+		console.log("Login successful");
+		console.log("Response data: ", response.data);
+		console.log("Response headers: ", response.headers);
+
+		const token = response.headers.authorization;
+		console.log("Token set: ", token);
+
+		localStorage.setItem("token", token);
+		setIsLoggedIn(true);
+	  } catch (error) {
+		console.error("Login error:", error);
+	  }
+	};
 
 
   return (
@@ -49,7 +54,6 @@ const LoginForm = () => {
       <button type="submit">Login</button>
     </form>
   );
-
 }
 
 export default LoginForm;

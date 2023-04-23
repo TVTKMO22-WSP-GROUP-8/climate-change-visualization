@@ -76,7 +76,7 @@ function App() {
               isLoggedIn ? (
                 <Navigate to="/dashboard" />
               ) : (
-                <LoginForm onLogin={handleLogin} setUserToken={setUserToken} />
+                <LoginForm onLogin={handleLogin} setUserToken={setUserToken} setIsLoggedIn={setIsLoggedIn} />
               )
             }
           />

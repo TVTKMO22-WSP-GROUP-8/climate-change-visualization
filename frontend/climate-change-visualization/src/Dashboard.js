@@ -1,36 +1,34 @@
+// src/Dashboard.js
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import CreateView from "./CreateView"; // Import the CreateView component
+import axios from 'axios';
 
-const Dashboard = () => {
+
+const Dashboard = ({ userApi }) => {
   const [data, setData] = useState([]);
   const [views, setViews] = useState([]); // Declare views and setViews
-  const token = localStorage.getItem("token"); 
-  const fetchData = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      console.log("Token in Dashboard:", token);
-      const response = await axios.get("/api/visualization/visualizations", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setData(response.data);
-      setViews(response.data); // Set views with the fetched data
-    } catch (error) {
-      console.log("Error fetching data:", error);
-    }
-  };
+
+	const fetchData = async () => {
+	  try {
+		const token = localStorage.getItem("token");
+		const response = await axios.get("http://localhost:8080/api/data", {
+		  headers: {
+			Authorization: token,
+		  },
+		});
+		setData(response.data);
+	  } catch (error) {
+		console.error("Error fetching data:", error);
+	  }
+	};
 
   useEffect(() => {
     fetchData();
-  }, [token]);
+  }, []);
 
   const handleDeleteView = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:8080/api/visualization/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await userApi.delete(`/api/visualization/${id}`);
       console.log('View deleted:', response.data);
       setViews(views.filter((view) => view.id !== id));
     } catch (error) {
@@ -45,7 +43,7 @@ const Dashboard = () => {
   return (
     <div>
       <h2>Dashboard</h2>
-      <CreateView token={token} onNewView={handleNewView} />
+      <CreateView userApi={userApi} onNewView={handleNewView} />
       <h3>Your Visualization Views:</h3>
       <ul>
         {views.map((view) => (
