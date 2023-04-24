@@ -23,7 +23,7 @@ import org.springframework.security.authentication.DisabledException;
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
-    
+
     private final UserRepository userRepository;
     private final UserService userService;
     private final JwtUtil jwtUtil;
@@ -47,10 +47,7 @@ public class UserController {
                 .header("Authorization", "Bearer " + jwt)
                 .build();
     }
-    
-    
-    
-    
+
     private void authenticate(String username, String password) throws BadCredentialsException {
         System.out.println("Authenticating user: " + username); // line for debugging
         try {
