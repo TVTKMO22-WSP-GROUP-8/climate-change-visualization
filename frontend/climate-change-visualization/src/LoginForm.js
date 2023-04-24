@@ -1,7 +1,7 @@
 // src/LoginForm.js
 import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router';
+import axiosInstance from './axiosInstance';
+import { useNavigate } from "react-router-dom";
 import './LoginForm.css';
 
 function LoginForm({ onLogin, setUserToken,setIsLoggedIn }) {
@@ -13,7 +13,7 @@ function LoginForm({ onLogin, setUserToken,setIsLoggedIn }) {
 	  e.preventDefault();
 
 	  try {
-		const response = await axios.post("http://localhost:8080/api/user/login", {
+		const response = await axiosInstance.post("/user/login", {
 		  username,
 		  password,
 		});

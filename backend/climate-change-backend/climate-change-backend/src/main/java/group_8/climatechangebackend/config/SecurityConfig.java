@@ -30,10 +30,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager(), jwtUtil);
-        jwtAuthenticationFilter.setFilterProcessesUrl("/api/user/login");
         JwtTokenFilter jwtTokenFilter = new JwtTokenFilter(jwtUtil, customUserDetailsService);
-    
+
         http
             .csrf().disable()
             .authorizeRequests()
@@ -41,11 +39,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/**").permitAll()
                 .anyRequest().authenticated()
             .and()
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterAfter(jwtTokenFilter, JwtAuthenticationFilter.class)
+                .formLogin()
+                    .loginProcessingUrl("/api/user/login")
+                    .successHandler(new CustomAuthenticationSuccessHandler(jwtUtil))
+                    .permitAll()
+                .and()
+                .addFilterAfter(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
-    
+
     @Autowired
     public void configure(AuthenticationManagerBuilder auth, BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
         auth.authenticationProvider(authenticationProvider(bCryptPasswordEncoder));

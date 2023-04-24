@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
+import axiosInstance from './axiosInstance';
 import {
   LineChart,
   Line,
@@ -14,9 +14,9 @@ import './MainContent.css';
 function MainContent({ isLoggedIn, handleLogin, ...rest }){
 	// Replace the current token-related lines in your component with these lines
 	const token = localStorage.getItem('token');
-	const annualDataUrl = token ? `http://localhost:8080/api/data/annual?token=${token}` : '';
-	const monthlyDataUrl = token ? `http://localhost:8080/api/data/monthly?token=${token}` : '';
-	const twoThousandYearsDataUrl = token ? `http://localhost:8080/api/data/2000years?token=${token}` : '';
+	const annualDataUrl = token ? `/api/data/annual?token=${token}` : '';
+	const monthlyDataUrl = token ? `/api/data/monthly?token=${token}` : '';
+	const twoThousandYearsDataUrl = token ? `/api/data/2000years?token=${token}` : '';
 	const [chartData, setChartData] = useState([]);
 	const [nhMonthlyData, setNhMonthlyData] = useState([]);
 	const [shMonthlyData, setShMonthlyData] = useState([]);
@@ -32,27 +32,27 @@ function MainContent({ isLoggedIn, handleLogin, ...rest }){
 		  headers: { Authorization: `Bearer ${token}` },
 		};
 
-		const nhMonthlyResponse = await axios.get(
+		const nhMonthlyResponse = await axiosInstance.get(
 		  monthlyDataUrl.replace('/api/data', '/api/northern-hemisphere'),
 		  config
 		);
 		console.log('NH Monthly data:', nhMonthlyResponse.data);
-		const shMonthlyResponse = await axios.get(
+		const shMonthlyResponse = await axiosInstance.get(
 		  monthlyDataUrl.replace('/api/data', '/api/southern-hemisphere'),
 		  config
 		);
 		console.log('SH Monthly data:', shMonthlyResponse.data);
-		const nhAnnualResponse = await axios.get(
+		const nhAnnualResponse = await axiosInstance.get(
 		  annualDataUrl.replace('/api/data', '/api/northern-hemisphere'),
 		  config
 		);
 		console.log('NH Annual data:', nhAnnualResponse.data);
-		const shAnnualResponse = await axios.get(
+		const shAnnualResponse = await axiosInstance.get(
 		  annualDataUrl.replace('/api/data', '/api/southern-hemisphere'),
 		  config
 		);
 		console.log('SH Annual data:', shAnnualResponse.data);
-		const nh2000Response = await axios.get(
+		const nh2000Response = await axiosInstance.get(
 		  twoThousandYearsDataUrl.replace('/api/data', '/api/northern-hemisphere'),
 		  config
 		);

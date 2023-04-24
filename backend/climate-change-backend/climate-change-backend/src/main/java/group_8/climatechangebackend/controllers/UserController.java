@@ -33,18 +33,19 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody User user) throws Exception {
-        System.out.println("Login request received for user: " + user.getUsername()); // line for debugging
         authenticate(user.getUsername(), user.getPassword());
         final UserDetails userDetails = userService.loadUserByUsername(user.getUsername());
         final String jwt = jwtUtil.generateToken(userDetails);
-
+    
         System.out.println("Generated token: " + jwt); // line for debugging
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + jwt);
-
-        return ResponseEntity.ok().headers(headers).build();
+    
+        return ResponseEntity.ok()
+                .header("Authorization", "Bearer " + jwt)
+                .build();
     }
+    
+    
+    
     
     private void authenticate(String username, String password) throws BadCredentialsException {
         System.out.println("Authenticating user: " + username); // line for debugging

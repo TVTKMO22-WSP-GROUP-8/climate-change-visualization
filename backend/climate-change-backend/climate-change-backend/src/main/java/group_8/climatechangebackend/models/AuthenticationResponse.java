@@ -1,17 +1,17 @@
 package group_8.climatechangebackend.models;
 
-public class AuthenticationResponse {
-    private String token;
+import java.io.Serializable;
 
-    public AuthenticationResponse(String token) {
-        this.token = token;
+public class AuthenticationResponse implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    private final String jwt;
+
+    public AuthenticationResponse(String jwt) {
+        this.jwt = jwt;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
+    public String getJwt() {
+        return jwt;
     }
 }

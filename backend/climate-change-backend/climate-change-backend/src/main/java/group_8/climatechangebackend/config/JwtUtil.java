@@ -1,15 +1,15 @@
 package group_8.climatechangebackend.config;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
-import group_8.climatechangebackend.services.JwtUtilService;
-
+import org.springframework.util.StringUtils;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import javax.annotation.PostConstruct;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
@@ -23,10 +23,16 @@ public class JwtUtil {
 
     @Value("${jwt.secret}")
     private String secret;
+
     private SecretKey secretKey;
+
     @Value("${jwt.expiration}")
     private long jwtExpirationInMillis;
 
+    @PostConstruct
+    public void initSecretKey() {
+        secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    }
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
@@ -39,35 +45,55 @@ public class JwtUtil {
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationInMillis))
-                .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
+                .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
     }
-    
-    public String getUsernameFromToken(String token) {
-        return getClaimFromToken(token, Claims::getSubject);
+
+    public String extractUsername(String token) {
+        if (StringUtils.isEmpty(token)) {
+            throw new IllegalArgumentException("Token cannot be null or empty");
+        }
+
+        try {
+            return extractClaim(token, Claims::getSubject);
+        } catch (MalformedJwtException ex) {
+            throw new IllegalArgumentException("Invalid or malformed token", ex);
+        }
     }
 
-    public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = getAllClaimsFromToken(token);
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
+    public void generateTokenResponse(UserDetails userDetails, HttpServletResponse response) throws IOException {
+        String token = generateToken(userDetails);
 
-    private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(secret.getBytes())).build().parseClaimsJws(token).getBody();
+        Map<String, Object> data = new HashMap<>();
+        data.put("token", token);
+
+        response.setContentType("application/json");
+        response.setStatus(HttpServletResponse.SC_OK);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.writeValue(response.getWriter(), data);
+
+        response.getWriter().flush();
     }
-    @PostConstruct
-    public void initSecretKey() {
-        secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    private Claims extractAllClaims(String token) {
+        try {
+            return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
+        } catch (MalformedJwtException ex) {
+            throw new IllegalArgumentException("Invalid or malformed token", ex);
+        }
     }
-    public boolean isTokenExpired(String token) {
-        final Date expiration = getClaimFromToken(token, Claims::getExpiration);
-        return expiration.before(new Date());
-    }
-    public String extractUsername(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
-    }
+
     public boolean validateToken(String token, UserDetails userDetails) {
-        final String username = getUsernameFromToken(token);
+        final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+
+    public boolean isTokenExpired(String token) {
+        final Date expiration = extractClaim(token, Claims::getExpiration);
+        return expiration.before(new Date());
     }
 }

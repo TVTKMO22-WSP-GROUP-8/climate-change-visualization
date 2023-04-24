@@ -1,26 +1,31 @@
 // src/Dashboard.js
 import React, { useState, useEffect } from "react";
 import CreateView from "./CreateView"; // Import the CreateView component
-import axios from 'axios';
+import axiosInstance from './axiosInstance';
 
 
-const Dashboard = ({ userApi }) => {
+const Dashboard = () => {
   const [data, setData] = useState([]);
   const [views, setViews] = useState([]); // Declare views and setViews
 
+  const token = localStorage.getItem("token");
 	const fetchData = async () => {
 	  try {
-		const token = localStorage.getItem("token");
-		const response = await axios.get("http://localhost:8080/api/data", {
+		const token = localStorage.getItem("token"); // Get the token from local storage
+
+		const response = await axiosInstance.get("/data", {
 		  headers: {
-			Authorization: token,
+			"Authorization": `Bearer ${token}`,
 		  },
 		});
+
 		setData(response.data);
+		console.log("Fetched data:", response.data);
 	  } catch (error) {
 		console.error("Error fetching data:", error);
 	  }
 	};
+
 
   useEffect(() => {
     fetchData();
@@ -28,7 +33,7 @@ const Dashboard = ({ userApi }) => {
 
   const handleDeleteView = async (id) => {
     try {
-      const response = await userApi.delete(`/api/visualization/${id}`);
+      const response = await axiosInstance.delete(`/api/visualization/${id}`);
       console.log('View deleted:', response.data);
       setViews(views.filter((view) => view.id !== id));
     } catch (error) {
@@ -43,7 +48,7 @@ const Dashboard = ({ userApi }) => {
   return (
     <div>
       <h2>Dashboard</h2>
-      <CreateView userApi={userApi} onNewView={handleNewView} />
+      <CreateView onNewView={handleNewView} />
       <h3>Your Visualization Views:</h3>
       <ul>
         {views.map((view) => (
