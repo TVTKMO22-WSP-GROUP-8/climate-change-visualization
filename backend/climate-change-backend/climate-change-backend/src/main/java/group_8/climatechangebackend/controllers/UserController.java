@@ -23,13 +23,17 @@ import org.springframework.security.authentication.DisabledException;
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
+    
+    private final UserRepository userRepository;
+    private final UserService userService;
+    private final JwtUtil jwtUtil;
 
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private JwtUtil jwtUtil;
+    public UserController(UserRepository userRepository, UserService userService, JwtUtil jwtUtil) {
+        this.userRepository = userRepository;
+        this.userService = userService;
+        this.jwtUtil = jwtUtil;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody User user) throws Exception {

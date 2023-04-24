@@ -21,13 +21,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
-    private final JwtUtil jwtUtil;
+    
+    @Autowired
+    private JwtUtil jwtUtil;
 
-    public SecurityConfig(CustomUserDetailsService customUserDetailsService, JwtUtil jwtUtil) {
-        this.customUserDetailsService = customUserDetailsService;
-        this.jwtUtil = jwtUtil;
+    //public SecurityConfig(CustomUserDetailsService customUserDetailsService, JwtUtil jwtUtil) {
+    //    this.customUserDetailsService = customUserDetailsService;
+    //    this.jwtUtil = jwtUtil;
+    //}
+    @Bean
+    public JwtTokenFilter jwtTokenFilter() {
+        return new JwtTokenFilter(jwtUtil, customUserDetailsService);
     }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         JwtTokenFilter jwtTokenFilter = new JwtTokenFilter(jwtUtil, customUserDetailsService);
