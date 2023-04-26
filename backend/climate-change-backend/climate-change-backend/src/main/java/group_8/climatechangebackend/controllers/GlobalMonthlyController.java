@@ -1,6 +1,5 @@
+// File name: GlobalMonthlyController.java
 package group_8.climatechangebackend.controllers;
-
-// GlobalMonthlyController.java
 
 import group_8.climatechangebackend.models.GlobalMonthly;
 import group_8.climatechangebackend.services.GlobalMonthlyService;

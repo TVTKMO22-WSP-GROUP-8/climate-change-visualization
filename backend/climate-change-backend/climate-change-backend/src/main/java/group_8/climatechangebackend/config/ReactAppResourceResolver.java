@@ -1,3 +1,4 @@
+//
 package group_8.climatechangebackend.config;
 
 import org.springframework.core.io.Resource;

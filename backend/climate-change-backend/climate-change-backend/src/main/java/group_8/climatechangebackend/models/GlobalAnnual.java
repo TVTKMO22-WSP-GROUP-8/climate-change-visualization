@@ -1,3 +1,4 @@
+// File name: GlobalAnnual.java
 package group_8.climatechangebackend.models;
 
 import javax.persistence.*;

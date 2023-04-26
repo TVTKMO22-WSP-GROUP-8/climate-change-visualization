@@ -1,43 +1,36 @@
 // src/LoginForm.js
 import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router';
+import axiosInstance from './axiosInstance';
+import { useNavigate } from "react-router-dom";
 import './LoginForm.css';
 
-
-function LoginForm({ onLogin, setUserToken }) {
+function LoginForm({ onLogin, setUserToken,setIsLoggedIn }) {
   const [username, setUsername] = useState('root');
   const [password, setPassword] = useState('root');
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-		console.log('Sending login request with:', { username, password });
-      const response = await axios.post('http://localhost:8080/api/user/login', {
-        username,
-        password,
-      });
-		console.log('Full response:', response);
-      if (response.status === 200) {
-        console.log('Login successful');
-        console.log('Response data:', response.data); // Added this line to check the response data
-        const token = response.data.token; // Replace 'token' with the actual key holding the token in the response data
-        setUserToken(token); // Update the token in the App.js state
-        console.log('Token set:', token);
-        onLogin(); // Set the isLoggedIn state to true in App.js
-        navigate('/dashboard');
-      } else {
-        console.error('Login failed');
-      }
-    } catch (error) {
-      if (error.response && error.response.status === 403) {
-        alert("Wrong username or password");
-      } else {
-        console.error('Error during login:', error);
-      }
-    }
-  };
+	const handleLogin = async (e) => {
+	  e.preventDefault();
+
+	  try {
+		const response = await axiosInstance.post("/user/login", {
+		  username,
+		  password,
+		});
+
+		console.log("Login successful");
+		console.log("Response data: ", response.data);
+		console.log("Response headers: ", response.headers);
+
+		const token = response.headers.authorization;
+		console.log("Token set: ", token);
+
+		localStorage.setItem("token", token);
+		setIsLoggedIn(true);
+	  } catch (error) {
+		console.error("Login error:", error);
+	  }
+	};
 
 
   return (
@@ -61,7 +54,6 @@ function LoginForm({ onLogin, setUserToken }) {
       <button type="submit">Login</button>
     </form>
   );
-
 }
 
 export default LoginForm;

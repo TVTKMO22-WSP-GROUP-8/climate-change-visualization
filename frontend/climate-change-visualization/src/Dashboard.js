@@ -1,52 +1,55 @@
-import React, { useState, useEffect } from 'react';
-import CreateView from './CreateView';
-import axios from 'axios';
-import './Dashboard.css';
+// src/Dashboard.js
+import React, { useState, useEffect } from "react";
+import CreateView from "./CreateView"; // Import the CreateView component
+import axiosInstance from './axiosInstance';
 
-function Dashboard({token}) {
-	console.log('Token in Dashboard:', token);
 
-	const [views, setViews, data, setData] = useState([]);
+const Dashboard = () => {
+  const [data, setData] = useState([]);
+  const [views, setViews] = useState([]); // Declare views and setViews
+
+  const token = localStorage.getItem("token");
+	const fetchData = async () => {
+	  try {
+		const token = localStorage.getItem("token"); // Get the token from local storage
+
+		const response = await axiosInstance.get("/data", {
+		  headers: {
+		'Authorization': 'Bearer /dOW4m1F2pafIC4eViVX62tkwdntfW0/WceUkuR095nOH58chb1v510o6mOT6kdN+XY5TJCLwEh0hlkpIVs9wA==',
+        'Content-Type': 'application/json'
+		  },
+		});
+
+		setData(response.data);
+		console.log("Fetched data:", response.data);
+	  } catch (error) {
+		console.error("Error fetching data:", error);
+	  }
+	};
+
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-		console.log(token); // Add this line to log the token value
-		const response = await axios.get('http://localhost:8080/api/visualization/visualizations', {
-		  headers: { Authorization: `Bearer ${token}` },
-		});
-        setViews(response.data);
-		console.log('Visualization data:', response.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
     fetchData();
-  }, [token]);
+  }, []);
 
   const handleDeleteView = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:8080/api/visualization/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axiosInstance.delete(`/api/visualization/${id}`);
       console.log('View deleted:', response.data);
       setViews(views.filter((view) => view.id !== id));
     } catch (error) {
       console.error('Error while deleting the view:', error);
     }
   };
-	// Add this function in the Dashboard component
-	const handleNewView = (newView) => {
-	  setViews([...views, newView]);
-	};
 
-	// Pass the handleNewView function to the CreateView component
-	<CreateView token={token} onNewView={handleNewView} />
+  const handleNewView = (newView) => {
+    setViews([...views, newView]);
+  };
+
   return (
     <div>
       <h2>Dashboard</h2>
-      <CreateView token={token} onNewView={handleNewView} />
+      <CreateView onNewView={handleNewView} />
       <h3>Your Visualization Views:</h3>
       <ul>
         {views.map((view) => (
@@ -64,4 +67,5 @@ function Dashboard({token}) {
     </div>
   );
 }
+
 export default Dashboard;

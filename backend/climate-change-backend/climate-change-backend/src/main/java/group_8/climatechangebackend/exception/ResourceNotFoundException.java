@@ -1,4 +1,5 @@
-package group_8.climatechangebackend.config;
+// File name: ResourceNotFoundException.java
+package group_8.climatechangebackend.exception;
 
 
 public class ResourceNotFoundException extends RuntimeException {
