@@ -1,15 +1,14 @@
 package group_8.climatechangebackend.controllers;
-import group_8.climatechangebackend.jwt.JwtUtil;
-import group_8.climatechangebackend.models.AuthenticationResponse;
 
+import group_8.climatechangebackend.models.AuthenticationResponse;
 import org.springframework.http.HttpHeaders;
 import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,25 +26,20 @@ public class UserController {
 
     private final UserRepository userRepository;
     private final UserService userService;
-    private final JwtUtil jwtUtil;
 
     @Autowired
-    public UserController(UserRepository userRepository, UserService userService, JwtUtil jwtUtil) {
+    public UserController(@Lazy UserRepository userRepository, @Lazy UserService userService) {
         this.userRepository = userRepository;
         this.userService = userService;
-        this.jwtUtil = jwtUtil;
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody User user) throws Exception {
         authenticate(user.getUsername(), user.getPassword());
         final UserDetails userDetails = userService.loadUserByUsername(user.getUsername());
-        final String jwt = jwtUtil.generateToken(userDetails);
-    
-        System.out.println("Generated token: " + jwt); // line for debugging
-    
+
         return ResponseEntity.ok()
-                .header("Authorization", "Bearer " + jwt)
+                .header("Authorization")
                 .build();
     }
 
@@ -65,12 +59,13 @@ public class UserController {
     // Add methods for deleting users and their visualization views
     @DeleteMapping("/delete")
     public ResponseEntity<Void> deleteUser(Principal principal) {
-    User user = userRepository.findByUsername(principal.getName())
-            .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        User user = userRepository.findByUsername(principal.getName())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-    userRepository.delete(user);
-    return ResponseEntity.ok().build();
-}
+        userRepository.delete(user);
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody User user) {
         User registeredUser = userService.registerUser(user.getUsername(), user.getPassword());
