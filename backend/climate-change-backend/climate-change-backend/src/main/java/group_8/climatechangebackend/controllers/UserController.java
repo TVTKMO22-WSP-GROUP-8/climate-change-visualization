@@ -4,6 +4,7 @@ import group_8.climatechangebackend.models.AuthenticationResponse;
 import org.springframework.http.HttpHeaders;
 import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,9 @@ public class UserController {
     private final UserRepository userRepository;
     private final UserService userService;
 
+    @Value("${my.token}")
+    private String token;
+
     @Autowired
     public UserController(@Lazy UserRepository userRepository, @Lazy UserService userService) {
         this.userRepository = userRepository;
@@ -39,8 +43,8 @@ public class UserController {
         final UserDetails userDetails = userService.loadUserByUsername(user.getUsername());
 
         return ResponseEntity.ok()
-                .header("Authorization")
-                .build();
+             .header("Authorization", "Bearer " + token)
+             .build();
     }
 
     private void authenticate(String username, String password) throws BadCredentialsException {
