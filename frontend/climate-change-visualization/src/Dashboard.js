@@ -15,7 +15,8 @@ const Dashboard = () => {
 
 		const response = await axiosInstance.get("/data", {
 		  headers: {
-			"Authorization": `Bearer ${token}`,
+		'Authorization': 'Bearer /dOW4m1F2pafIC4eViVX62tkwdntfW0/WceUkuR095nOH58chb1v510o6mOT6kdN+XY5TJCLwEh0hlkpIVs9wA==',
+        'Content-Type': 'application/json'
 		  },
 		});
 

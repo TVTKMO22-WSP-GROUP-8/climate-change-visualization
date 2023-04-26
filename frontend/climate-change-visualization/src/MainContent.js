@@ -29,7 +29,9 @@ function MainContent({ isLoggedIn, handleLogin, ...rest }){
 		console.log('Token:', token);
 	  try {
 		const config = {
-		  headers: { Authorization: `Bearer ${token}` },
+		  headers: {		
+		  'Authorization': 'Bearer /dOW4m1F2pafIC4eViVX62tkwdntfW0/WceUkuR095nOH58chb1v510o6mOT6kdN+XY5TJCLwEh0hlkpIVs9wA==',
+		  'Content-Type': 'application/json'}
 		};
 
 		const nhMonthlyResponse = await axiosInstance.get(
