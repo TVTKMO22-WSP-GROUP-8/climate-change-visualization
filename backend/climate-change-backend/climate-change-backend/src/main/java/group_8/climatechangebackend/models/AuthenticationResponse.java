@@ -1,3 +1,4 @@
+// File name: AuthenticationResponse.java
 package group_8.climatechangebackend.models;
 
 import java.io.Serializable;

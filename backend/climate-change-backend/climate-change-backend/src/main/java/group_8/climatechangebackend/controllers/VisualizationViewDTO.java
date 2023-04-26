@@ -1,3 +1,4 @@
+// File name: VisualizationViewDTO.java
 package group_8.climatechangebackend.controllers;
 
 import java.util.Set;

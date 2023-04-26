@@ -1,3 +1,4 @@
+// File name: SecurityConfig.java
 package group_8.climatechangebackend.security;
 
 import group_8.climatechangebackend.services.CustomUserDetailsService;

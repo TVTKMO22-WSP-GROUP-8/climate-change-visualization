@@ -1,7 +1,7 @@
+// File name: UserService.java
 package group_8.climatechangebackend.services;
 
 import java.util.ArrayList;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;

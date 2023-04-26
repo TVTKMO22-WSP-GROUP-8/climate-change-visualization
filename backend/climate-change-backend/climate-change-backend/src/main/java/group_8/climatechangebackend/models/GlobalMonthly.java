@@ -1,6 +1,5 @@
+// File name: GlobalMonthly.java
 package group_8.climatechangebackend.models;
-// GlobalMonthly.java
-
 
 import javax.persistence.*;
 
