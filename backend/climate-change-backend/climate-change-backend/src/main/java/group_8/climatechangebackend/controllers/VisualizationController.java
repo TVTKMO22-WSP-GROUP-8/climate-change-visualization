@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import group_8.climatechangebackend.config.ResourceNotFoundException;
-import group_8.climatechangebackend.config.UsernameNotFoundException;
+import group_8.climatechangebackend.exception.ResourceNotFoundException;
+import group_8.climatechangebackend.exception.UsernameNotFoundException;
 import group_8.climatechangebackend.models.User;
 import org.springframework.security.core.context.SecurityContextHolder;
 import group_8.climatechangebackend.models.VisualizationView;

@@ -1,4 +1,4 @@
-package group_8.climatechangebackend.config;
+package group_8.climatechangebackend.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;

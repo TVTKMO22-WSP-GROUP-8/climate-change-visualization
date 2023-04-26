@@ -1,4 +1,4 @@
-package group_8.climatechangebackend.config;
+package group_8.climatechangebackend.exception;
 
 
 public class ResourceNotFoundException extends RuntimeException {

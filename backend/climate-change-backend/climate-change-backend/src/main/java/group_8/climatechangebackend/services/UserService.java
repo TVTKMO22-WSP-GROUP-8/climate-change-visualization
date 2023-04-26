@@ -1,7 +1,8 @@
 package group_8.climatechangebackend.services;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
-import group_8.climatechangebackend.config.UsernameNotFoundException;
+
+import group_8.climatechangebackend.exception.UsernameNotFoundException;
 import group_8.climatechangebackend.models.User;
 import group_8.climatechangebackend.repositories.UserRepository;
 import java.util.ArrayList;

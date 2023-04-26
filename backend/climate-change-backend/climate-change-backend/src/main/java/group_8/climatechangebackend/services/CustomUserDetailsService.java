@@ -1,5 +1,6 @@
 package group_8.climatechangebackend.services;
 
+import group_8.climatechangebackend.jwt.JwtUtil;
 import group_8.climatechangebackend.models.User;
 import group_8.climatechangebackend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,14 +8,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public CustomUserDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

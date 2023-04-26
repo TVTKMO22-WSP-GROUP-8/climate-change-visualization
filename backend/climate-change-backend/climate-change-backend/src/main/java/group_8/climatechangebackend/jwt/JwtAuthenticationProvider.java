@@ -1,4 +1,4 @@
-package group_8.climatechangebackend.config;
+package group_8.climatechangebackend.jwt;
 
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

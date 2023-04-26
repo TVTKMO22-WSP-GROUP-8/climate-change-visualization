@@ -1,6 +1,7 @@
 package group_8.climatechangebackend.controllers;
+import group_8.climatechangebackend.jwt.JwtUtil;
 import group_8.climatechangebackend.models.AuthenticationResponse;
-import group_8.climatechangebackend.config.JwtUtil;
+
 import org.springframework.http.HttpHeaders;
 import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
