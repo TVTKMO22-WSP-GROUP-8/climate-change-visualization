@@ -6,51 +6,30 @@ import LoginForm from './LoginForm';
 import Register from './Register';
 import Dashboard from './Dashboard';
 import MainContent from './MainContent';
+import { AuthProvider, useAuth } from './AuthContext';
 
 function App() {
-  const [token, setToken] = useState(localStorage.getItem('token') || '');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLoggedIn, setIsLoggedIn, setToken, removeToken } = useAuth();
 
-	  const handleLogin = () => {
-		setIsLoggedIn(true);
-	  };
-
-	  const handleRegisterSuccess = () => {
-		setIsLoggedIn(false);
-	  };
-
-	  const setUserToken = (token) => {
-		localStorage.setItem('token', token);
-		setToken(token);
-	  };
-
-	  const handleLogout = () => {
-		localStorage.removeItem('token');
-		setToken('');
-		setIsLoggedIn(false);
-	  };
-
-	  useEffect(() => {
-		if (token) {
-		  setIsLoggedIn(true);
+	useEffect(() => {
+	  const interceptor = axiosInstance.interceptors.request.use(
+		(config) => {
+		  const token = localStorage.getItem('token');
+		  if (token) {
+			config.headers['Authorization'] = `Bearer ${token}`;
+		  }
+		  return config;
+		},
+		(error) => {
+		  return Promise.reject(error);
 		}
-	  }, [token]);
+	  );
 
-  // Add the following code to intercept all API requests and add the Authorization header with the user token
-  useEffect(() => {
-    axiosInstance.interceptors.request.use(
-      (config) => {
-        const token = localStorage.getItem('token');
-        if (token) {
-          config.headers['Authorization'] = `Bearer ${token}`;
-        }
-        return config;
-      },
-      (error) => {
-        return Promise.reject(error);
-      }
-    );
-  }, []);
+	  return () => {
+		axiosInstance.interceptors.request.eject(interceptor);
+	  };
+	}, [isLoggedIn]);
+
 
   return (
     <Router>
@@ -60,7 +39,7 @@ function App() {
           <nav>
             <Link to="/dashboard">Dashboard</Link>
             <span> | </span>
-            <button onClick={handleLogout}>Logout</button>
+            <button onClick={removeToken}>Logout</button>
           </nav>
         ) : (
           <nav>
@@ -76,7 +55,7 @@ function App() {
               isLoggedIn ? (
                 <Navigate to="/dashboard" />
               ) : (
-                <LoginForm onLogin={handleLogin} setUserToken={setUserToken} setIsLoggedIn={setIsLoggedIn} />
+                <LoginForm onLogin={() => setIsLoggedIn(true)} setUserToken={setToken} />
               )
             }
           />
@@ -86,7 +65,7 @@ function App() {
               isLoggedIn ? (
                 <Navigate to="/dashboard" />
               ) : (
-                <Register onSuccess={handleRegisterSuccess} />
+                <Register onSuccess={() => setIsLoggedIn(false)} />
               )
             }
           />
@@ -94,7 +73,7 @@ function App() {
             path="/dashboard"
             element={
               isLoggedIn ? (
-                <Dashboard token={token} />
+                <Dashboard />
               ) : (
                 <Navigate to="/login" />
               )

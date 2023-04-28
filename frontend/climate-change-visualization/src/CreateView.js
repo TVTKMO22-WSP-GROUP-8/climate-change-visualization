@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './CreateView.css';
 
-function CreateView({ token, onNewView }) {
+function CreateView({onNewView,token }) {
   const [urlIdentifier, setUrlIdentifier] = useState('');
   const [layout, setLayout] = useState('');
   const [description, setDescription] = useState('');

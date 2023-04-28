@@ -26,6 +26,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import group_8.climatechangebackend.models.VisualizationView;
 import group_8.climatechangebackend.repositories.UserRepository;
 import group_8.climatechangebackend.repositories.VisualizationViewRepository;
+import java.util.Optional;
+
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 
@@ -48,30 +51,20 @@ public class VisualizationController {
         VisualizationView createdView = visualizationViewRepository.save(view);
         return ResponseEntity.ok(createdView);
     }
-
     @GetMapping("/visualizations")
-public ResponseEntity<List<VisualizationViewDTO>> getVisualizationViewsForUser(@AuthenticationPrincipal UserDetails userDetails) {
-    if (userDetails == null) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    public ResponseEntity<List<VisualizationView>> getAllVisualizationViews(Principal principal) {
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        String username = userDetails.getUsername();
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     
-        List<VisualizationView> visualizationViews = visualizationViewRepository.findByUser(user);
-        List<VisualizationViewDTO> visualizationViewDtos = new ArrayList<>();
-        for (VisualizationView visualizationView : visualizationViews) {
-            VisualizationViewDTO dto = new VisualizationViewDTO();
-            dto.setId(visualizationView.getId());
-            dto.setName(visualizationView.getName());
-            dto.setUrlIdentifier(visualizationView.getUrlIdentifier());
-            dto.setLayout(visualizationView.getLayout());
-            dto.setDescription(visualizationView.getDescription());
-            visualizationViewDtos.add(dto);
-        }
-        return ResponseEntity.ok(visualizationViewDtos);
+        User user = userRepository.findByUsername(principal.getName())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    
+        List<VisualizationView> views = visualizationViewRepository.findByUser(user);
+        return ResponseEntity.ok(views);
     }
     
-    
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteVisualizationView(@PathVariable("id") Integer id, Principal principal) {
         User user = userRepository.findByUsername(principal.getName())

@@ -22,7 +22,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(nullable = false, unique = true)
     private String username;
+
+    @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -40,6 +43,7 @@ public class User {
         this.username = username;
         this.password = password;
     }
+
 
     public Integer getId() {
         return id;

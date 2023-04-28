@@ -1,37 +1,39 @@
 // src/LoginForm.js
 import React, { useState } from 'react';
 import axiosInstance from './axiosInstance';
-import { useNavigate } from "react-router-dom";
+import { useAuth } from './AuthContext';
 import './LoginForm.css';
 
-function LoginForm({ onLogin, setUserToken,setIsLoggedIn }) {
+function LoginForm() {
   const [username, setUsername] = useState('root');
   const [password, setPassword] = useState('root');
-  const navigate = useNavigate();
+  const [error, setError] = useState('');
+  const { setIsLoggedIn, setToken } = useAuth();
 
-	const handleLogin = async (e) => {
-	  e.preventDefault();
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
-	  try {
-		const response = await axiosInstance.post("/user/login", {
-		  username,
-		  password,
-		});
+    try {
+      const response = await axiosInstance.post("/api/user/login", {
+        username,
+        password,
+      });
 
-		console.log("Login successful");
-		console.log("Response data: ", response.data);
-		console.log("Response headers: ", response.headers);
+      console.log("Login successful");
+      console.log("Response data: ", response.data);
+      console.log("Response headers: ", response.headers);
 
-		const token = response.headers.authorization;
-		console.log("Token set: ", token);
+      const token = response.headers.authorization;
 
-		localStorage.setItem("token", token);
-		setIsLoggedIn(true);
-	  } catch (error) {
-		console.error("Login error:", error);
-	  }
-	};
-
+      localStorage.setItem("token", token);
+      setToken(token);
+      setIsLoggedIn(true);
+      setError('');
+    } catch (error) {
+      console.error("Login error:", error);
+      setError('Invalid username or password');
+    }
+  };
 
   return (
     <form onSubmit={handleLogin} className="login-form">
@@ -52,6 +54,7 @@ function LoginForm({ onLogin, setUserToken,setIsLoggedIn }) {
         />
       </label>
       <button type="submit">Login</button>
+      {error && <div className="error">{error}</div>}
     </form>
   );
 }
