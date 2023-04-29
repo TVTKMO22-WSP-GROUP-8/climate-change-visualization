@@ -22,15 +22,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(nullable = false, unique = true)
     private String username;
+
+    @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private UserRole role = UserRole.USER;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<VisualizationView> visualizationViews = new HashSet<>();
 
     public User() {
     }
@@ -40,6 +41,7 @@ public class User {
         this.username = username;
         this.password = password;
     }
+
 
     public Integer getId() {
         return id;
@@ -73,11 +75,4 @@ public class User {
         this.role = role;
     }
 
-    public Set<VisualizationView> getVisualizationViews() {
-        return visualizationViews;
-    }
-
-    public void setVisualizationViews(Set<VisualizationView> visualizationViews) {
-        this.visualizationViews = visualizationViews;
-    }
 }

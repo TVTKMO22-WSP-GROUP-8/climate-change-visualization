@@ -35,10 +35,10 @@ public class UserService implements UserDetailsService {
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
-                .authorities(new ArrayList<>()) // Set appropriate authorities based on your application requirements
+                .authorities("REQUIRED_PERMISSION") // Grant the required authority to users
                 .build();
     }
-
+    
     public User registerUser(String username, String password) {
         if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
             throw new IllegalArgumentException("Username and password cannot be empty");
