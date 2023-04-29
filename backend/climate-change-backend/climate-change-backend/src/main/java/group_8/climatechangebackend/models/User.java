@@ -32,8 +32,6 @@ public class User {
     @Column(name = "role", nullable = false)
     private UserRole role = UserRole.USER;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<VisualizationView> visualizationViews = new HashSet<>();
 
     public User() {
     }
@@ -77,11 +75,4 @@ public class User {
         this.role = role;
     }
 
-    public Set<VisualizationView> getVisualizationViews() {
-        return visualizationViews;
-    }
-
-    public void setVisualizationViews(Set<VisualizationView> visualizationViews) {
-        this.visualizationViews = visualizationViews;
-    }
 }

@@ -1,6 +1,7 @@
 package group_8.climatechangebackend.security;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 
 public class HardcodedTokenAuthenticationFilter extends OncePerRequestFilter {
 
@@ -34,9 +36,13 @@ public class HardcodedTokenAuthenticationFilter extends OncePerRequestFilter {
         String token = header.substring(7);
 
         if (token.equals(hardcodedToken)) {
-            User user = new User("authenticatedUser", "", Collections.emptyList());
+            // Define the authority list and add the "ROLE_USER" authority
+            List<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("USER"));
+            User user = new User("authenticatedUser", "", authorities);
+
+            // Use the authorities when creating the authentication object
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                    user, null, Collections.emptyList());
+                    user, null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 

@@ -1,68 +1,128 @@
-import React, { useState, useEffect } from "react";
-import CreateView from "./CreateView"; // Import the CreateView component
-import axiosInstance from './axiosInstance';
-import VisualizationViewDTO from './VisualizationViewDTO';
+import React, { useState, useEffect } from 'react';
+import V1 from './V1';
+import V2 from './V2';
+import V3 from './V3';
+import V4 from './V4';
+import V5 from './V5';
 
 const Dashboard = () => {
-  const [views, setViews] = useState([]); // Declare views and setViews
-
-  const token = localStorage.getItem("token") || "";
-  const fetchData = async () => {
-    try {
-      const token = localStorage.getItem("token"); // Get the token from local storage
-
-      const response = await axiosInstance.get("/api/visualization/visualizations", {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-
-      setViews(response.data.map(VisualizationViewDTO.fromEntity));
-      console.log("Fetched data:", response.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [selectedVisualizations, setSelectedVisualizations] = useState([]);
+  const [showVisualizations, setShowVisualizations] = useState(false);
+  const handleVisualizationChange = (event) => {
+    const { value, checked } = event.target;
+    if (checked) {
+      setSelectedVisualizations([...selectedVisualizations, value]);
+    } else {
+      setSelectedVisualizations(selectedVisualizations.filter((v) => v !== value));
+    }
+  };
+	const visualizationComponents = {
+	  V1,
+	  V2,
+	  V3,
+	  V4,
+	  V5,
+	};
+  const checkLoginStatus = () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
     }
   };
 
   useEffect(() => {
-    fetchData();
+    checkLoginStatus();
   }, []);
 
-  const handleDeleteView = async (id) => {
-    try {
-      const response = await axiosInstance.delete(`/api/visualization/${id}`);
-      console.log('View deleted:', response.data);
-      setViews(views.filter((view) => view.id !== id));
-    } catch (error) {
-      console.error('Error while deleting the view:', error);
+  const handleCheckboxChange = (e) => {
+    const { value, checked } = e.target;
+    if (checked) {
+      setSelectedVisualizations([...selectedVisualizations, value]);
+    } else {
+      setSelectedVisualizations(selectedVisualizations.filter((v) => v !== value));
     }
   };
 
-  const handleNewView = (newView) => {
-    setViews([...views, newView]);
+  const handleButtonClick = () => {
+    setShowVisualizations(true);
   };
 
-  return (
+   return (
     <div>
-      <h2>Dashboard</h2>
-      <CreateView onNewView={handleNewView} token={token} />
-      <h3>Your Visualization Views:</h3>
-      <ul>
-        {views.map((view) => (
-          <li key={view.id}>
-            {view.urlIdentifier} - {view.layout} - {view.description}
-            <ul>
-              {view.datasets.map((dataset) => (
-                <li key={dataset.id}>{dataset.name}</li>
-              ))}
-            </ul>
-            <button onClick={() => handleDeleteView(view.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
+      {/* ... */}
+      {isLoggedIn ? (
+        <>
+          <div>
+            <h3>Select Visualizations:</h3>
+            <label>
+              <input
+                type="checkbox"
+                value="V1"
+                onChange={handleVisualizationChange}
+              />{' '}
+              V1
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                value="V2"
+                onChange={handleVisualizationChange}
+              />{' '}
+              V2
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                value="V3"
+                onChange={handleVisualizationChange}
+              />{' '}
+              V3
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                value="V4"
+                onChange={handleVisualizationChange}
+              />{' '}
+              V4
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                value="V5"
+                onChange={handleVisualizationChange}
+              />{' '}
+              V5
+            </label>
+          </div>
+          <button onClick={() => setShowVisualizations(true)}>View</button>
+          {showVisualizations && (
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+              }}
+            >
+              {selectedVisualizations.map((visualization, index) => {
+                const VisualizationComponent = visualizationComponents[visualization];
+                return (
+                  <div key={index} style={{ flex: 1 }}>
+                    <VisualizationComponent isLoggedIn={isLoggedIn} />
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </>
+      ) : (
+        <p>Please log in to view your visualizations.</p>
+      )}
     </div>
   );
-}
+};
 
 export default Dashboard;
