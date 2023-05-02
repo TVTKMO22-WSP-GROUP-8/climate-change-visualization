@@ -12,6 +12,8 @@ import {
 } from 'recharts';
 import './V1.css';
 
+
+
 function V1({ isLoggedIn, handleLogin, ...rest }) {
   const [chartData, setChartData] = useState([]);
   const [globalAnnualData, setGlobalAnnualData] = useState([]);
