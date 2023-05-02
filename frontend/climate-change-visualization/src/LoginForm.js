@@ -1,4 +1,3 @@
-// src/LoginForm.js
 import React, { useState } from 'react';
 import axiosInstance from './axiosInstance';
 import { useAuth } from './AuthContext';
@@ -22,6 +21,7 @@ function LoginForm() {
       console.log("Login successful");
       console.log("Response data: ", response.data);
       console.log("Response headers: ", response.headers);
+	  console.log('Authorization header:', response.headers['authorization']); // Add this line
 
       const token = response.headers.authorization;
 

@@ -42,12 +42,17 @@ public class UserController {
     public ResponseEntity<?> createAuthenticationToken(@RequestBody User user) throws Exception {
         authenticate(user.getUsername(), user.getPassword());
         final UserDetails userDetails = userService.loadUserByUsername(user.getUsername());
-        System.out.println("Generated token: "+ token); // line for debugging
+        System.out.println("Generated token: "+ token); // existing line for debugging
+        System.out.println("User details: " + userDetails); // new line for debugging
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + token);
+        System.out.println("Headers: " + headers); // new line for debugging
+    
         return ResponseEntity.ok()
-             .header("Authorization", "Bearer " + token)
+             .headers(headers)
              .build();
-
     }
+    
     
     private void authenticate(String username, String password) throws BadCredentialsException {
         System.out.println("Authenticating user: " + username); // line for debugging
