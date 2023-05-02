@@ -14,7 +14,7 @@ import './V1.css';
 
 
 
-function V1({ isLoggedIn, handleLogin, ...rest }) {
+function V2({ isLoggedIn, handleLogin, ...rest }) {
   const [chartData, setChartData] = useState([]);
   const [globalAnnualData, setGlobalAnnualData] = useState([]);
   const [globalMonthlyData, setGlobalMonthlyData] = useState([]);
@@ -167,4 +167,4 @@ function V1({ isLoggedIn, handleLogin, ...rest }) {
 	</div>
 	);
 }
-export default V1;
+export default V2;
