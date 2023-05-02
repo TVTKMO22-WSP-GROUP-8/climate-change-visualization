@@ -9,7 +9,7 @@ import {
   Tooltip,
   Legend,
 } from 'recharts';
-import './V1.css';
+import './V4.css';
 
 function V4({ isLoggedIn, handleLogin, ...rest }) {
   const [chartData, setChartData] = useState([]);
@@ -81,7 +81,7 @@ function V4({ isLoggedIn, handleLogin, ...rest }) {
   useEffect(() => {
     const updateChartData = () => {
       let newData = [];
-  
+    
       if (selectedDataType === 'Annual') {
         newData = globalAnnualData.map((d, i) => ({
           time: d.time,
@@ -100,6 +100,7 @@ function V4({ isLoggedIn, handleLogin, ...rest }) {
         newData = nh2000Data
           .filter((item) => {
             return (
+              item.year !== null &&
               item.T !== null &&
               item.LF !== null &&
               item.LFMinus !== null &&
@@ -112,19 +113,25 @@ function V4({ isLoggedIn, handleLogin, ...rest }) {
           })
           .map((item) => ({
             time: item.year || '',
-            T: item.T || null,
-            LF: item.LF || null,
-            LFMinus: item.LFMinus || null,
-            LFPlus: item.LFPlus || null,
-            AMinus: item.AMinus || null,
-            APlus: item.APlus || null,
-            ABMinus: item.ABMinus || null,
-            ABPlus: item.ABPlus || null,
+            T: item.t || null,
+            LF: item.lf || null,
+            LFMinus: item.lfminus || null,
+            LFPlus: item.lfplus || null,
+            AMinus: item.aminus || null,
+            APlus: item.aplus || null,
+            ABMinus: item.abminus || null,
+            ABPlus: item.abplus || null,
             type: 'Northern Hemisphere 2000',
           }));
-      }
+      
+    
+      setChartData(newData);
+      console.log('Updated chart data:', newData);
+    };
+    
   
       setChartData(newData);
+      console.log('Updated chart data:', newData);
     };
   
     updateChartData();
@@ -159,6 +166,7 @@ function V4({ isLoggedIn, handleLogin, ...rest }) {
         <option value="2000-Year">2000-Year</option>
       </select>
       <LineChart
+        syncId="temperatureAnomalies"
         width={900}
         height={500}
         data={chartData}
@@ -171,7 +179,7 @@ function V4({ isLoggedIn, handleLogin, ...rest }) {
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="time" />
-        <YAxis />
+        <YAxis  />
         <Tooltip />
         <Legend />
         {selectedDataType !== '2000-Year' && (
@@ -219,7 +227,6 @@ function V4({ isLoggedIn, handleLogin, ...rest }) {
     </>
   )}
 </div>
-
 );
 };
 
