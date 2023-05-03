@@ -12,27 +12,25 @@ import {
 import './V2.css';
 
 function V2({ isLoggedIn, handleLogin, ...rest }) {
-  const [chartData, setChartData] = useState([]);
-  const [globalAnnualData, setGlobalAnnualData] = useState([]);
-  const [globalMonthlyData, setGlobalMonthlyData] = useState([]);
-  const [nhAnnualData, setNhAnnualData] = useState([]);
-  const [nhMonthlyData, setNhMonthlyData] = useState([]);
-  const [shAnnualData, setShAnnualData] = useState([]);
-  const [shMonthlyData, setShMonthlyData] = useState([]);
   const [selectedDataType, setSelectedDataType] = useState('Annual');
-  const [nh2000Data, setNh2000Data] = useState([]);
+  const [chartData, setChartData] = useState([]);
+  const [maunaLoaCO2AnnualData, setMaunaLoaCO2AnnualData] = useState([]);
+  const [maunaLoaCO2MonthlyData, setMaunaLoaCO2MonthlyData] = useState([]);
+  const [iceCore1Data, setIceCore1Data] = useState([]);
+  const [iceCore2Data, setIceCore2Data] = useState([]);
+  const [iceCore3Data, setIceCore3Data] = useState([]);
+
+  
 
 
   const fetchData = useCallback(async () => {
     try {
       const apiEndpoints = [
-        '/api/global-annual',
-        '/api/global-monthly',
-        '/api/northern-hemisphere-annual',
-        '/api/northern-hemisphere-monthly',
-        '/api/southern-hemisphere-annual',
-        '/api/southern-hemisphere-monthly',
-        '/api/northern-hemisphere-2000',
+        '/api/mauna-loa-co2-annual',
+        '/api/mauna-loa-co2-monthly',
+        '/api/ice-core-1',
+        '/api/ice-core-2',
+        '/api/ice-core-3',
       ];
 
       for (const endpoint of apiEndpoints) {
@@ -44,26 +42,20 @@ function V2({ isLoggedIn, handleLogin, ...rest }) {
 
         // Set the corresponding state based on the endpoint
         switch (endpoint) {
-          case '/api/global-annual':
-            setGlobalAnnualData(response.data);
+          case '/mauna-loa-co2-annual':
+            setMaunaLoaCO2AnnualData(response.data);
             break;
-          case '/api/global-monthly':
-            setGlobalMonthlyData(response.data);
+          case '/api/mauna-loa-co2-monthly':
+            setMaunaLoaCO2MonthlyData(response.data);
             break;
-          case '/api/northern-hemisphere-annual':
-            setNhAnnualData(response.data);
+          case '/api/ice-core-1':
+            setIceCore1Data(response.data);
             break;
-          case '/api/northern-hemisphere-monthly':
-            setNhMonthlyData(response.data);
+          case '/api/ice-core-2':
+            setIceCore2Data(response.data);
             break;
-          case '/api/southern-hemisphere-annual':
-            setShAnnualData(response.data);
-            break;
-          case '/api/southern-hemisphere-monthly':
-            setShMonthlyData(response.data);
-            break;
-          case '/api/northern-hemisphere-2000':
-            setNh2000Data(response.data);
+          case '/api/ice-core-3':
+            setIceCore3Data(response.data);
             break;
             default:
             break;
@@ -83,47 +75,45 @@ function V2({ isLoggedIn, handleLogin, ...rest }) {
       let newData = [];
     
       if (selectedDataType === 'Annual') {
-        newData = globalAnnualData.map((d, i) => ({
-          time: d.time,
-          Global: d.anomaly,
-          'Northern Hemisphere': nhAnnualData[i]?.anomaly,
-          'Southern Hemisphere': shAnnualData[i]?.anomaly,
+        newData = maunaLoaCO2AnnualData.map((d, i) => ({
+          year: d.year,
+          mean: d.mean,
+        
         }));
       } else if (selectedDataType === 'Monthly') {
-        newData = globalMonthlyData.map((d, i) => ({
-          time: d.time,
-          Global: d.anomaly,
-          'Northern Hemisphere': nhMonthlyData[i]?.anomaly,
-          'Southern Hemisphere': shMonthlyData[i]?.anomaly,
+        newData = maunaLoaCO2MonthlyData.map((d, i) => ({
+          year: d.year,
+          mean: d.mean,
+
         }));
-      } else if (selectedDataType === '2000-Year') {
-        newData = nh2000Data
+      } else if (selectedDataType === 'IceCore') {
+        newData = iceCore1Data && iceCore2Data && iceCore3Data
           .filter((item) => {
             return (
               item.year !== null &&
-              item.T !== null &&
-              item.LF !== null &&
-              item.LFMinus !== null &&
-              item.LFPlus !== null &&
-              item.AMinus !== null &&
-              item.APlus !== null &&
-              item.ABMinus !== null &&
-              item.ABPlus !== null
+              item.Sample !== null &&
+              item.Analysis !== null &&
+              item.MeanIceDepth !== null &&
+              item.IceAge !== null &&
+              item.MeanAirAge !== null &&
+              item.Co2MixingRatio !== null 
+
             );
           })
           .map((item) => ({
-            time: item.year || '',
-            T: item.t || null,
-            LF: item.lf || null,
-            LFMinus: item.lfminus || null,
-            LFPlus: item.lfplus || null,
-            AMinus: item.aminus || null,
-            APlus: item.aplus || null,
-            ABMinus: item.abminus || null,
-            ABPlus: item.abplus || null,
-            type: 'Northern Hemisphere 2000',
+            year: item.year || '',
+            Sample: item.sample || null,
+            Analysis: item.analysis || null,
+            MeanIceDepth: item.meanicedepth || null,
+            IceAge: item.iceage || null,
+            MeanAirAge: item.meanaceage || null,
+            CO2MixingRatio: item.co2mixingratio || null,
+            type: 'Ice Core',
           }));
-      
+
+
+
+        
     
       setChartData(newData);
       console.log('Updated chart data:', newData);
@@ -141,19 +131,20 @@ function V2({ isLoggedIn, handleLogin, ...rest }) {
     };
   }, [
     selectedDataType,
-    globalAnnualData,
-    globalMonthlyData,
-    nhAnnualData,
-    nhMonthlyData,
-    shAnnualData,
-    shMonthlyData,
-    nh2000Data,
+    maunaLoaCO2AnnualData,
+    maunaLoaCO2MonthlyData,
+    iceCore1Data,
+    iceCore2Data,
+    iceCore3Data,
   ]);
   
 
   return (
 <div>
-  <h2>V1: Temperature Anomalies</h2>
+  <h2>V2:  Mauna Loa measurements</h2>
+  <p>
+    
+  </p>
   {isLoggedIn && (
     <>
       <select
@@ -163,7 +154,7 @@ function V2({ isLoggedIn, handleLogin, ...rest }) {
       >
         <option value="Annual">Annual</option>
         <option value="Monthly">Monthly</option>
-        <option value="2000-Year">2000-Year</option>
+        <option value="IceCore">Ice Core</option>
       </select>
       <LineChart
         syncId="temperatureAnomalies"
@@ -178,50 +169,64 @@ function V2({ isLoggedIn, handleLogin, ...rest }) {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="time" />
-        <YAxis  />
+        <XAxis dataKey="year" />
+        <YAxis  dataKey="mean"/>
         <Tooltip />
         <Legend />
-        {selectedDataType !== '2000-Year' && (
+        {selectedDataType === 'Annual' && (
             <>  
         <Line
           type="monotone"
-          dataKey="Global"
-          name="Global"
+          dataKey="Annual"
+          name="Annual"
           stroke="#8884d8"
           activeDot={{ r: 8 }}
         />
-        <Line
-          type="monotone"
-          dataKey="Northern Hemisphere"
-          name="Northern Hemisphere"
-          stroke="#82ca9d"
-        />
-        <Line
-          type="monotone"
-          dataKey="Southern Hemisphere"
-          name="Southern Hemisphere"
-          stroke="#ffc658"
-        />
           </>
       )}
-          {selectedDataType === '2000-Year' && (
+      {selectedDataType === 'Monthly' && (
+            <>  
+        <Line
+          type="monotone"
+          dataKey="Monthly"
+          name="Monthly"
+          stroke="#8884d8"
+          activeDot={{ r: 8 }}
+        />
+        </>
+      )}
+
+          {selectedDataType === 'IceCore' && (
 		               <>
-              <Line type="monotone" dataKey="T" stroke="#ff0000" />
-              <Line type="monotone" dataKey="LF" stroke="#8884d8" />
-              <Line type="monotone" dataKey="LFMinus" stroke="#82ca9d" />
-              <Line type="monotone" dataKey="LFPlus" stroke="#ff7300" />
-              <Line type="monotone" dataKey="AMinus" stroke="#2c3e50" />
-              <Line type="monotone" dataKey="APlus" stroke="#8e44ad" />
-              <Line type="monotone" dataKey="ABMinus" stroke="#f1c40f" />
-              <Line type="monotone" dataKey="ABPlus" stroke="#e74c3c" />
+              <Line type="monotone" dataKey="Sample" stroke="#ff0000" />
+              <Line type="monotone" dataKey="Analysis" stroke="#8884d8" />
+              <Line type="monotone" dataKey="MeanIceDepth" stroke="#82ca9d" />
+              <Line type="monotone" dataKey="IceAge" stroke="#ff7300" />
+              <Line type="monotone" dataKey="MeanAirAge" stroke="#2c3e50" />
+              <Line type="monotone" dataKey="CO2MixingRatio" stroke="#8e44ad" />
             </>
             )}
       </LineChart>
       <p>
-        Data source:{" "}
-        <a href="https://crudata.uea.ac.uk/cru/data/temperature/">
-          HadCRUT5 analysis time series
+        Data sources:{" "}
+        
+        <a href="https://gml.noaa.gov/ccgg/trends/data.html">
+          Mauna Loa CO2
+        </a>
+        <br></br>
+        <a href='https://cdiac.ess-dive.lbl.gov/ftp/trends/co2/lawdome.combined.dat'>
+          Arctic Ice Core
+        </a>
+        </p>
+
+      <p>
+        Descriptions:{" "}
+        <a href="https://gml.noaa.gov/ccgg/about/co2_measurements.html">
+          Mauna Loa CO2
+        </a>
+        <br></br>
+        <a href="https://cdiac.ess-dive.lbl.gov/trends/co2/lawdome.html">
+          Arctic Ice Core
         </a>
       </p>
     </>
