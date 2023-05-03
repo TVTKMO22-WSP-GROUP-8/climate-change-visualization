@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -76,10 +77,24 @@ public class UserController {
         userRepository.delete(user);
         return ResponseEntity.ok().build();
     }
-
+    @GetMapping("/userinfo")
+    public ResponseEntity<User> getUserInfo(Principal principal) {
+        User user = userRepository.findByUsername(principal.getName())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    
+        return ResponseEntity.ok(user);
+    }    
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody User user) {
-        User registeredUser = userService.registerUser(user.getUsername(), user.getPassword());
+        User registeredUser = userService.registerUser(
+            user.getUsername(), 
+            user.getPassword(),
+            user.getFirstName(),
+            user.getLastName(),
+            user.getGender(),
+            user.getEmail(),
+            user.getPhone()
+        );
         if (registeredUser != null) {
             return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
         } else {

@@ -39,13 +39,26 @@ public class UserService implements UserDetailsService {
                 .build();
     }
     
-    public User registerUser(String username, String password) {
+    public User registerUser(
+        String username, 
+        String password,
+        String firstName,
+        String lastName,
+        String gender,
+        String email,
+        int phone
+    ) {
         if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
             throw new IllegalArgumentException("Username and password cannot be empty");
         }
         User newUser = new User();
         newUser.setUsername(username);
         newUser.setPassword(bCryptPasswordEncoder.encode(password));
+        newUser.setFirstName(firstName);
+        newUser.setLastName(lastName);
+        newUser.setGender(gender);
+        newUser.setEmail(email);
+        newUser.setPhone(phone);
         return userRepository.save(newUser);
     }
 

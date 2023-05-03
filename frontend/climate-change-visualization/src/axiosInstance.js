@@ -19,5 +19,14 @@ axiosInstance.interceptors.request.use(
   },
   (error) => Promise.reject(error)
 );
+export const getUserInfo = async () => {
+  try {
+    const response = await axiosInstance.get('/api/user/userinfo');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching user info:', error);
+    return null;
+  }
+};
 
 export default axiosInstance;
