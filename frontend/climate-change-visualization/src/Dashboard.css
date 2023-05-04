@@ -1,15 +1,17 @@
 /* Set background color and image */
 body {
-  background-color: #f4f4f4;
-  background-image: url('https://example.com/background-image.jpg');
-  background-size: cover;
-  background-position: center;
+  position: relative;
+  height: 100vh;
+  margin: 0;
 }
+
+
+
 
 /* Style the main container */
 .container {
   margin: 0 auto;
-  max-width: 1200px;
+  max-width: 600px;
   padding: 50px;
 }
 

@@ -33,6 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/error").permitAll()
             .antMatchers(HttpMethod.POST, "/api/user/register").permitAll()
             .antMatchers(HttpMethod.POST, "/api/user/login").permitAll()
+            .antMatchers(HttpMethod.POST, "/api/user/userinfo").permitAll()
+            .antMatchers(HttpMethod.GET, "/api/user/userinfo").permitAll()
             .antMatchers(HttpMethod.GET, "/api/northern-hemisphere-2000").permitAll()
             .antMatchers(HttpMethod.GET, "/api/**").permitAll()         
             .anyRequest().authenticated()

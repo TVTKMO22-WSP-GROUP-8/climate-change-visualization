@@ -1,14 +1,18 @@
-/* MainContent.css */
-.MainContent {
-    margin: 0 auto;
-    max-width: 800px;
-    text-align: center;
-    }
-    
-    .chart-container {
-    margin-top: 50px;
-    }
-    
-    .dropdown {
+/* V5.css */
+
+.sectors-container {
     margin-bottom: 20px;
-    }
+  }
+  
+  .doughnut-container {
+    margin-top: 50px;
+  }
+  
+  .subsectors-container {
+    margin-top: 50px;
+  }
+  
+  .sectors-container button {
+    margin-right: 10px;
+  }
+  

@@ -79,8 +79,16 @@ public class UserController {
     }
     @GetMapping("/userinfo")
     public ResponseEntity<User> getUserInfo(Principal principal) {
+        if (principal == null) {
+            // Return a response indicating that the user is not authenticated
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    
+        System.out.println("Getting user info for: " + principal.getName()); // Debug line
         User user = userRepository.findByUsername(principal.getName())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    
+        System.out.println("Found user: " + user); // Debug line
     
         return ResponseEntity.ok(user);
     }    

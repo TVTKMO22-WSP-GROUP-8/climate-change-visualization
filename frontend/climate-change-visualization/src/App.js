@@ -77,10 +77,27 @@ function App() {
             exact
             element={<V1 isLoggedIn={isLoggedIn} />}
           />
+          <Route
+            path="/V2"
+            element={<V2 isLoggedIn={isLoggedIn} />}
+          />
+          <Route
+            path="/V3"
+            element={<V3 isLoggedIn={isLoggedIn} />}
+          />
+          <Route
+            path="/V4"
+            element={<V4 isLoggedIn={isLoggedIn} />}
+          />
+          <Route
+            path="/V5"
+            element={<V5 isLoggedIn={isLoggedIn} />}
+          />
         </Routes>
       </div>
     </Router>
   );
+  
 }
 
 export default App;

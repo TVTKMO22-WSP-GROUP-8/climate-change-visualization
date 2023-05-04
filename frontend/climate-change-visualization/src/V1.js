@@ -154,6 +154,11 @@ function V1({ isLoggedIn, handleLogin, ...rest }) {
   return (
 <div>
   <h2>V1: Temperature Anomalies</h2>
+  <p>
+HadCRUT is a global temperature dataset, </p>
+<p>providing gridded temperature anomalies across the world as well as averages for the hemispheres and the globe as a whole. </p>
+<p>CRUTEM and HadSST are temperature datasets for the land and ocean regions, respectively, and contribute to the global dataset.</p>
+
   {isLoggedIn && (
     <>
       <select
