@@ -43,7 +43,7 @@ function V5({ isLoggedIn, handleLogin, ...rest }) {
       );
   
       const sectors = new Set(subsectorResponse.data.map((d) => d.sector));
-      setSectorData([...sectors].map((sector) => ({ sub_sector: sector })));
+      setSectorData([...sectors].map((sector) => ({ sub_sector: sector, id: sector })));
       setSubsectorsData(subsectorResponse.data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -60,7 +60,7 @@ function V5({ isLoggedIn, handleLogin, ...rest }) {
       return;
     }
   
-    const data = subsectorsData
+    const data = subsectorsData.filter((d) => d.sector === selectedSector)
       .filter((d) => d.sector === selectedSector)
       .map((d) => ({
         sub_sector: d.sub_sector,
@@ -73,7 +73,8 @@ function V5({ isLoggedIn, handleLogin, ...rest }) {
   
   const handleSectorClick = (data, index) => {
     setSelectedSector(data.sub_sector);
-    console.log(`Clicked on sector ${data.sub_sector}`);
+    console.log(`Clicked on sector ${data.id}`);
+
   };
 
   const renderCustomizedLabel = ({
@@ -102,13 +103,23 @@ function V5({ isLoggedIn, handleLogin, ...rest }) {
     );
   };
   return (
-    <div>
-      <h2>CO2 Emissions by Sectors</h2>
+          <div>
+            <h2>CO2 Emissions by Sectors</h2>
+            <div className="sectors-container">
+            {sectorData.map((sector, index) => (
+              <button
+                key={`sector-${index}`}
+                onClick={() => handleSectorClick(sector, index)}
+              >
+                {sector.sub_sector}
+              </button>
+            ))}
+          </div>
+
       <div className="doughnut-container">
         <ResponsiveContainer width="100%" height={400}>
           <PieChart>
-          <Pie
-
+            <Pie
               data={chartData}
               dataKey="value"
               nameKey="sub_sector"
@@ -116,14 +127,13 @@ function V5({ isLoggedIn, handleLogin, ...rest }) {
               cy="50%"
               outerRadius={80}
               label={renderCustomizedLabel}
-              onClick={handleSectorClick}
-              >
-
-              {
-                chartData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))
-              }
+            >
+              {chartData.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
+              ))}
             </Pie>
             <Tooltip />
           </PieChart>
@@ -133,7 +143,7 @@ function V5({ isLoggedIn, handleLogin, ...rest }) {
         <div className="subsectors-container">
           <h3>{selectedSector} Sub-sectors</h3>
           <ul>
-          {subsectorsData
+            {subsectorsData
               .filter((d) => d.sector === selectedSector)
               .map((subsector) => (
                 <li key={subsector.id}>
@@ -145,5 +155,6 @@ function V5({ isLoggedIn, handleLogin, ...rest }) {
       )}
     </div>
   );
+  
  }
 export default V5;  
