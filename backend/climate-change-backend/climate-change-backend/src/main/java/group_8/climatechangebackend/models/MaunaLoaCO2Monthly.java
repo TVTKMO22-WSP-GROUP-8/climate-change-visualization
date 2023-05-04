@@ -15,10 +15,6 @@ public class MaunaLoaCO2Monthly {
 
     @Column(name ="month")
     private int month;
-
-    @Column(name = "decimal_date")
-    private double decimalDate;
-
     @Column(name = "average")
     private double average;
 
@@ -58,14 +54,6 @@ public class MaunaLoaCO2Monthly {
 
     public void setMonth(int month) {
         this.month = month;
-    }
-
-    public double getDecimalDate() {
-        return this.decimalDate;
-    }
-
-    public void setDecimalDate(double decimalDate) {
-        this.decimalDate = decimalDate;
     }
 
     public double getAverage() {
