@@ -6,6 +6,8 @@ import V4 from './V4';
 import V5 from './V5';
 import UserManagement from './UserManagement';
 import axiosInstance, { getUserInfo } from './axiosInstance';
+import natureImg from './assets/nature.jpg';
+import './Dashboard.css';
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
@@ -96,17 +98,24 @@ const Dashboard = () => {
   }
 
   return (
+
     <div>
       {isLoggedIn ? (
+        
         <>
         {user && (
+          
             <div>
               <h2>Welcome, {user.firstName} {user.lastName}!</h2>
               <p>Email: {user.email}</p>
               <p>Phone: {user.phone}</p>
               <p>Gender: {user.gender}</p>
             </div>
+            
           )}
+              <div className="dashboard" style={{backgroundImage: `url(${natureImg})`}}>
+                {/* ... */}
+              </div>
           <div>
             <h3>Select Visualizations:</h3>
             <label>

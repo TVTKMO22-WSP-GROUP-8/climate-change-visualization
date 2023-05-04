@@ -1,0 +1,30 @@
+﻿sub-sector,share_of_global_greenhouse_gas_emissions,id
+Road,11.9,1
+Aviation,1.9,2
+Rail,0.4,3
+Pipeline,0.3,4
+Ship,1.7,5
+Residential,10.9,6
+Commercial,6.6,7
+Iron & Steel,7.2,8
+Non-ferous metals,0.7,9
+Machinery,0.5,10
+Food and tobacco,1,11
+"Paper, pulp & printing",0.6,12
+Chemical & petrochemical (energy),3.6,13
+Other industry,10.6,14
+Energy in Agri & Fishing,1.7,15
+Unallocated fuel combustion,7.8,16
+Coal,1.9,17
+Oil & Natural Gas,3.9,18
+Cement,3,19
+Chemical & petrochemical (industrial),2.2,20
+Livestock & Manure,5.8,21
+Rice Cultivation,1.3,22
+Agricultural Soils,4.1,23
+Crop Burning,3.5,24
+Forest Land,2.2,25
+Cropland,1.4,26
+Grassland,0.1,27
+Landfills,1.9,28
+Wastewater,1.3,29
