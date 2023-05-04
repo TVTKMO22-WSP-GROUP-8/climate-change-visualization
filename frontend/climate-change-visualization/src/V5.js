@@ -61,20 +61,19 @@ function V5({ isLoggedIn, handleLogin, ...rest }) {
     }
   
     const data = subsectorsData.filter((d) => d.sector === selectedSector)
-      .filter((d) => d.sector === selectedSector)
-      .map((d) => ({
-        sub_sector: d.sub_sector,
-        value: d.share_of_global_greenhouse_gas_emissions,
-      }));
+    .filter((d) => d.sector === selectedSector) // Remove this line
+    .map((d) => ({
+      sub_sector: d.sub_sector,
+      value: d.share_of_global_greenhouse_gas_emissions,
+    }));
   
     setChartData(data);
     console.log(`Updated chart data for ${selectedSector}:`, data);
   }, [selectedSector, subsectorsData]);
   
   const handleSectorClick = (data, index) => {
-    setSelectedSector(data.sub_sector);
+    setSelectedSector(data.id);
     console.log(`Clicked on sector ${data.id}`);
-
   };
 
   const renderCustomizedLabel = ({
@@ -103,58 +102,57 @@ function V5({ isLoggedIn, handleLogin, ...rest }) {
     );
   };
   return (
-          <div>
-            <h2>CO2 Emissions by Sectors</h2>
-            <div className="sectors-container">
-            {sectorData.map((sector, index) => (
-              <button
-                key={`sector-${index}`}
-                onClick={() => handleSectorClick(sector, index)}
-              >
-                {sector.sub_sector}
-              </button>
-            ))}
-          </div>
-
-      <div className="doughnut-container">
-        <ResponsiveContainer width="100%" height={400}>
-          <PieChart>
-            <Pie
-              data={chartData}
-              dataKey="value"
-              nameKey="sub_sector"
-              cx="50%"
-              cy="50%"
-              outerRadius={80}
-              label={renderCustomizedLabel}
-            >
-              {chartData.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Pie>
-            <Tooltip />
-          </PieChart>
-        </ResponsiveContainer>
-      </div>
-      {selectedSector && (
-        <div className="subsectors-container">
-          <h3>{selectedSector} Sub-sectors</h3>
-          <ul>
-            {subsectorsData
-              .filter((d) => d.sector === selectedSector)
-              .map((subsector) => (
-                <li key={subsector.id}>
-                  {subsector.sub_sector}: {subsector.share_of_global_greenhouse_gas_emissions}%
-                </li>
-            ))}
-          </ul>
-        </div>
-      )}
+    <div>
+      <h2>CO2 Emissions by Sectors</h2>
+      <div className="sectors-container">
+      {sectorData.map((sector, index) => (
+        <button
+          key={`sector-${index}`}
+          onClick={() => handleSectorClick(sector, index)}
+        >
+          {sector.id}
+        </button>
+      ))}
     </div>
-  );
-  
- }
-export default V5;  
+
+<div className="doughnut-container">
+  <ResponsiveContainer width="100%" height={400}>
+    <PieChart>
+      <Pie
+        data={chartData}
+        dataKey="value"
+        nameKey="sub_sector"
+        cx="50%"
+        cy="50%"
+        outerRadius={80}
+        label={renderCustomizedLabel}
+      >
+        {chartData.map((entry, index) => (
+          <Cell
+            key={`cell-${index}`}
+            fill={COLORS[index % COLORS.length]}
+          />
+        ))}
+      </Pie>
+      <Tooltip />
+    </PieChart>
+  </ResponsiveContainer>
+</div>
+{selectedSector && (
+  <div className="subsectors-container">
+    <h3>{selectedSector} Sub-sectors</h3>
+    <ul>
+      {subsectorsData
+        .filter((d) => d.sector === selectedSector)
+        .map((subsector) => (
+          <li key={subsector.id}>
+            {subsector.sub_sector}: {subsector.share_of_global_greenhouse_gas_emissions}%
+          </li>
+      ))}
+    </ul>
+  </div>
+)}
+</div>
+);
+}
+export default V5;
