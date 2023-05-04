@@ -10,8 +10,8 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    // Retrieve your hardcoded token or the token from the user's session (recommended)
-    const token = '/dOW4m1F2pafIC4eViVX62tkwdntfW0/WceUkuR095nOH58chb1v510o6mOT6kdN+XY5TJCLwEh0hlkpIVs9wA==';
+    // Replace the hardcoded token with the token from the user's session (recommended)
+    const token = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -19,6 +19,7 @@ axiosInstance.interceptors.request.use(
   },
   (error) => Promise.reject(error)
 );
+
 export const getUserInfo = async () => {
   try {
     const response = await axiosInstance.get('/api/user/userinfo');

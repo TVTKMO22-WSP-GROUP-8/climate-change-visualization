@@ -44,7 +44,20 @@ const Dashboard = () => {
   useEffect(() => {
     checkLoginStatus();
   }, []);
-  
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      axiosInstance
+        .get('/api/user/userinfo')
+        .then((response) => {
+          setUser(response.data);
+          console.log('User Info:', response.data);
+        })
+        .catch((error) => {
+          console.error('Error fetching user info:', error);
+        });
+    }
+  }, [isLoggedIn]);
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
     if (checked) {
@@ -69,49 +82,17 @@ const Dashboard = () => {
   const handleButtonClick = () => {
     setShowVisualizations(true);
   };
-  function UserInfo() {
-    const [userInfo, setUserInfo] = useState(null);
-
-    useEffect(() => {
-      fetchUserInfo();
-    }, []);
-
-    const fetchUserInfo = async () => {
-      if (isLoggedIn) {
-        const userInfo = await getUserInfo();
-        setUser(userInfo);
-      }
-    };
-    
-    useEffect(() => {
-      if (isLoggedIn) {
-        getUserInfo()
-          .then((response) => {
-            setUser(response.data);
-            console.log('User Info:', response.data);
-          })
-          .catch((error) => {
-            console.error('Error fetching user info:', error);
-          });
-      }
-    }, [isLoggedIn]);
-  }
-
   return (
-
     <div>
       {isLoggedIn ? (
-        
         <>
-        {user && (
-          
+          {user && (
             <div>
               <h2>Welcome, {user.firstName} {user.lastName}!</h2>
               <p>Email: {user.email}</p>
               <p>Phone: {user.phone}</p>
               <p>Gender: {user.gender}</p>
             </div>
-            
           )}
               <div className="dashboard" style={{backgroundImage: `url(${natureImg})`}}>
                 {/* ... */}

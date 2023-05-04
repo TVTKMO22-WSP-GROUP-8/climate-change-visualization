@@ -104,8 +104,9 @@ function V5({ isLoggedIn, handleLogin, ...rest }) {
   return (
     <div>
       <h2>CO2 Emissions by Sectors</h2>
+      
       <div className="sectors-container">
-      {sectorData.map((sector, index) => (
+          {sectorData.map((sector, index) => (
         <button
           key={`sector-${index}`}
           onClick={() => handleSectorClick(sector, index)}
