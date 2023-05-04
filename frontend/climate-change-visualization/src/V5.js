@@ -31,7 +31,37 @@ function V5({ isLoggedIn, handleLogin, ...rest }) {
   const [selectedSector, setSelectedSector] = useState('');
   const [sectorData, setSectorData] = useState([]);
   const [subsectorsData, setSubsectorsData] = useState([]);
-  const [chartData, setChartData] = useState([]);
+  const [chartData, setChartData] = useState([
+
+    { sub_sector: 'Road', value: 11.9 },
+    { sub_sector: 'Aviation', value: 1.9 },
+    { sub_sector: 'Rail', value: 0.4 },
+    { sub_sector: 'Pipeline', value: 0.3 },
+    { sub_sector: 'Ship', value: 10.9 },
+    { sub_sector: 'Machinery', value: 0.5 },
+    { sub_sector: 'Food and tobacco', value: 1 },
+    { sub_sector: 'Paper, pulp & printing', value: 0.6 },
+    { sub_sector: 'Chemical & petrochemical (energy)', value: 3.6 },
+    { sub_sector: 'Other industry', value: 10.6 },
+    { sub_sector: 'Energy in Agri & Fishing', value: 1.7 },
+    { sub_sector: 'Unallocated fuel combustion', value: 7.8 },
+    { sub_sector: 'Coal', value: 1.9 },
+    { sub_sector: 'Oil & Natural Gas', value: 3.9 },    
+    { sub_sector: 'Cement', value: 3 },
+    { sub_sector: 'Forest Land', value: 2.2 },
+    { sub_sector: 'Crop Burning', value: 3.5 },
+    { sub_sector: 'Agricultural Soils', value: 4.1 },
+    { sub_sector: 'Rice Cultivation', value: 1.3 },
+    { sub_sector: 'Livestock & Manure', value: 5.8 },
+    { sub_sector: 'Chemical & petrochemical (industrial)', value: 2.2 },
+    { sub_sector: 'Cropland', value: 1.4 },
+    { sub_sector: 'Grassland', value: 0.1 },
+    { sub_sector: 'Landfills', value: 1.9 },
+    { sub_sector: 'Wastewater', value: 1.3 },
+    { sub_sector: 'Commercial', value: 6.6 },
+    { sub_sector: 'Iron & Steel', value: 7.2 },
+    { sub_sector: 'Non-ferous metals', value: 0.7 },
+  ]);
 
   const fetchData = useCallback(async () => {
     try {
@@ -50,7 +80,6 @@ function V5({ isLoggedIn, handleLogin, ...rest }) {
     }
   }, []);
   
-
   useEffect(() => {
     fetchData();
   }, [fetchData]);
@@ -106,16 +135,21 @@ function V5({ isLoggedIn, handleLogin, ...rest }) {
       <h2>CO2 Emissions by Sectors</h2>
       
       <div className="dropdown">
-        {sectorData.map((sector, index) => (
-          <button
-            key={`sector-${index}`}
-            onClick={() => handleSectorClick(sector)}
-          >
-            {sector.id}
-          </button>
-        ))}
+        <button className="dropbtn">Select Sector</button>
+        <div className="dropdown-content">
+          {sectorData.map((sector, index) => (
+            <button
+              key={`sector-${index}`}
+              onClick={() => handleSectorClick(sector)}
+            >
+              {sector.id}
+            </button>
+          ))}
+        </div>
       </div>
-    {chartData.length > 0 && (
+
+
+
   <div className="doughnut-container">
     <ResponsiveContainer width="100%" height={400}>
       <PieChart>
@@ -139,7 +173,6 @@ function V5({ isLoggedIn, handleLogin, ...rest }) {
       </PieChart>
     </ResponsiveContainer>
   </div>
-)}
 
 {selectedSector && (
   <div className="subsectors-container">
