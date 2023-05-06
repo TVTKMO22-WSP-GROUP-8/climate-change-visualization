@@ -1,5 +1,3 @@
-I removed DataController, visualization_views, DataService, Dataset, VisualizationViewDTO,  visualizationController classes from the backend, now I want to visualize my data without any problems,  how should I modify my frontend accordingly  .. provide me with code snippet and step by step solution 
-and here is the structure of my application right now: 
 models: 
 AuthenticationResponse
 GlobalAnnual
